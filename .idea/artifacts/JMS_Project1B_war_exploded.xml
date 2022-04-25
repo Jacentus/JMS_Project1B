@@ -14,7 +14,7 @@
           <element id="module-output" name="JMS_Project1B" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.22" />
+          <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.24" />
           <element id="library" level="project" name="Maven: org.jboss.resteasy:resteasy-jaxb-provider:6.0.1.Final" />
           <element id="library" level="project" name="Maven: jakarta.xml.bind:jakarta.xml.bind-api:3.0.1" />
           <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:3.0.1" />
