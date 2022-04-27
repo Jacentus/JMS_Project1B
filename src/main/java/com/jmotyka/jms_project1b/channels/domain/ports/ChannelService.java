@@ -2,6 +2,7 @@ package com.jmotyka.jms_project1b.channels.domain.ports;
 
 import com.jmotyka.jms_project1b.channels.domain.entities.Channel;
 
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,5 +15,7 @@ public interface ChannelService {
     Optional<Channel> getChannelByName(String channelName);
 
     Optional<List<String>> getChannelHistory(String channelName);
+
+    Optional<List<String>> getAllPublicChannels();
 
 }

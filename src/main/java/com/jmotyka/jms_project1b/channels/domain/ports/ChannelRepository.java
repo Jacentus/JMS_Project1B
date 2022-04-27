@@ -13,4 +13,6 @@ public interface ChannelRepository {
 
     Optional<List<String>> getChannelHistory(String channelName);
 
+    Optional<List<String>>getAllPublicChannels();
+
 }

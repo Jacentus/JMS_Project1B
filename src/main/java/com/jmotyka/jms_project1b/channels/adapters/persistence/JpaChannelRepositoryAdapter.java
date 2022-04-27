@@ -37,4 +37,9 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
         return channelRepository.getChannelHistory(channelName);
     }
 
+    @Override
+    public Optional<List<String>> getAllPublicChannels() {
+        return channelRepository.getAllPublicChannels();
+    }
+
 }

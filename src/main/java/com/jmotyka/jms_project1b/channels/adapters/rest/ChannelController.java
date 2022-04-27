@@ -6,12 +6,16 @@ import com.jmotyka.jms_project1b.channels.domain.ports.ChannelService;
 import lombok.Setter;
 
 import javax.inject.Inject;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.List;
 
 @Path("channels")
 @Setter
@@ -40,7 +44,11 @@ public class ChannelController {
         return Response.created(getLocation(channel.getChannelName())).build();
     }
 
-    ///////////////////////////////////////////     tu kolejne metody ////////////////////////////////////////////
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllPublicChannels(){
+        return Response.ok(channelService.getAllPublicChannels()).build();
+    }
 
     private URI getLocation(String channelName){
         return uriInfo.getAbsolutePathBuilder().path(channelName).build();

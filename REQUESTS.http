@@ -14,12 +14,26 @@ Accept: application/json
 
 #####
 
-POST http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels
+POST http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/publicChannel
 Content-Type: application/json
 Accept: application/json
 
 {
-  "channelName": "Ogólny"
+  "channelName": "Gdańsk"
 }
 
 #####
+
+POST http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/privateChannel
+Content-Type: application/json
+Accept: application/json
+
+{
+  "channelName": "Magiczny",
+  "isPrivate": true,
+  "permittedUsers": ["Jacek", "Marek"]
+}
+
+#####
+
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels

@@ -45,4 +45,10 @@ public class ChannelProcessor implements ChannelService {
     public Optional<List<String>> getChannelHistory(String channelName) {
         return channelRepository.getChannelHistory(channelName);
     }
+
+    @Override
+    public Optional<List<String>> getAllPublicChannels() {
+        return channelRepository.getAllPublicChannels();
+    }
+
 }

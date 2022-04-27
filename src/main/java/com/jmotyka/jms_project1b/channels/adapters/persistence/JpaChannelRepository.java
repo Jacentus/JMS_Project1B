@@ -28,6 +28,13 @@ public class JpaChannelRepository {
         return Optional.ofNullable(channelEntity);
     }
 
+    public Optional<List<String>>getAllPublicChannels(){
+        List<String> publicChannels = entityManager.createQuery("select c.channelName from Channel c", String.class)
+                .getResultList();
+        return Optional.ofNullable(publicChannels);
+    }
+
+
     public Optional<List<String>> getChannelHistory(String channelName){
         List<String> channelHistory = entityManager.createQuery("select c.channelHistory from Channel c where c.channelName = :channelName", String.class)
                 .setParameter("channelName", channelName)
