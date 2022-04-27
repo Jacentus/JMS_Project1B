@@ -11,7 +11,7 @@ import java.util.Optional;
 public class JpaChannelRepository {
 
     @Setter
-    @PersistenceContext//(unitName = "projectBdb")
+    @PersistenceContext(unitName = "projectBdb")
     private EntityManager entityManager;
 
     public ChannelEntity save(ChannelEntity channelEntity){

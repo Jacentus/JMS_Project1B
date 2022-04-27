@@ -9,7 +9,7 @@ import java.time.Instant;
 
 @NamedQuery(name = UserEntity.GET_BY_USERNAME, query = "select u from User u where u.userName = :username")
 @Entity(name = "User")
-@Table(name = "Users", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
+@Table(name = "Users", uniqueConstraints = {@UniqueConstraint(columnNames = "ID"), @UniqueConstraint(columnNames = "USERNAME")})
 @EqualsAndHashCode(of = "id")
 @Setter
 @Getter

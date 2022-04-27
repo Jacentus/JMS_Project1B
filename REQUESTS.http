@@ -8,7 +8,7 @@ Accept: application/json
 
 #####
 
-GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/users/Maciek
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/users/Jacek
 Content-Type: application/json
 Accept: application/json
 

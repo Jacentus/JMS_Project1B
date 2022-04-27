@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor //TODO: ZROBIĆ
+@RequiredArgsConstructor
 public class ChannelProcessor implements ChannelService {
 
     private final IdGenerator idGenerator;
@@ -27,17 +27,16 @@ public class ChannelProcessor implements ChannelService {
 
     @Override
     public Channel createChannel(String channelName) {
-        return null;
+        Channel channel = Channel.builder()
+                .channelName(channelName)
+                .isPrivate(false)
+                .build();
+        return channelRepository.createNewChannel(channel);
     }
 
     @Override
     public Optional<Channel> getChannelByName(String channelName) {
         return Optional.empty();
-    }
-
-    @Override
-    public void joinChannel(String username) {
-
     }
 
     @Override

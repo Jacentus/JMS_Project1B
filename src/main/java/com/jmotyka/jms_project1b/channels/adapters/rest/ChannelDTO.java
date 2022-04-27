@@ -15,6 +15,6 @@ public class ChannelDTO {
     private String channelName;
     private Boolean isPrivate;
     private List<String> permittedUsers;
-    private LinkedList<String> channelHistory;
+    //private LinkedList<String> channelHistory;
 
 }
