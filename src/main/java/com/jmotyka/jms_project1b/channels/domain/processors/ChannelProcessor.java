@@ -18,6 +18,7 @@ public class ChannelProcessor implements ChannelService {
     @Override
     public Channel createChannel(String channelName, Boolean isPrivate, List<String> permittedUsers) {
         Channel channel = Channel.builder()
+                .id(idGenerator.getNext())
                 .channelName(channelName)
                 .isPrivate(isPrivate)
                 .permittedUsers(permittedUsers)
@@ -28,6 +29,7 @@ public class ChannelProcessor implements ChannelService {
     @Override
     public Channel createChannel(String channelName) {
         Channel channel = Channel.builder()
+                .id(idGenerator.getNext())
                 .channelName(channelName)
                 .isPrivate(false)
                 .build();
@@ -36,11 +38,11 @@ public class ChannelProcessor implements ChannelService {
 
     @Override
     public Optional<Channel> getChannelByName(String channelName) {
-        return Optional.empty();
+        return channelRepository.getChannelByName(channelName);
     }
 
     @Override
-    public List<String> getChannelHistory(String channelName) {
-        return null;
+    public Optional<List<String>> getChannelHistory(String channelName) {
+        return channelRepository.getChannelHistory(channelName);
     }
 }

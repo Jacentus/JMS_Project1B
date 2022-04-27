@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 public class Channel {
 
+    private String id;
     private final String channelName;
     private final boolean isPrivate;
     private List<String> permittedUsers;

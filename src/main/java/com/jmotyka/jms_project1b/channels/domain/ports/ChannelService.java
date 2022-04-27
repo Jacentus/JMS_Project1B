@@ -13,6 +13,6 @@ public interface ChannelService {
 
     Optional<Channel> getChannelByName(String channelName);
 
-    List<String> getChannelHistory(String channelName);
+    Optional<List<String>> getChannelHistory(String channelName);
 
 }

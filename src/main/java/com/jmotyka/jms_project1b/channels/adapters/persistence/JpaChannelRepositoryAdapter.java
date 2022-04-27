@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -29,6 +30,11 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
     public Optional<Channel> getChannelByName(String channelName) {
         return channelRepository.getChannelByName(channelName)
                 .map(channelMapper::toDomain);
+    }
+
+    @Override
+    public Optional<List<String>> getChannelHistory(String channelName) {
+        return channelRepository.getChannelHistory(channelName);
     }
 
 }

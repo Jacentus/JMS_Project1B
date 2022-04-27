@@ -28,7 +28,7 @@ public class UserController {
     private UriInfo uriInfo;
 
     @POST
-    public Response createUser(UserDTO userDTO){ // czy to działa?
+    public Response createUser(UserDTO userDTO){
         User user = usersService.createUser(userMapper.toDomain(userDTO).getUserName());
         System.out.println("USER z Restcontroller: " + user);
         return Response.created(getLocation(user.getId())).build();

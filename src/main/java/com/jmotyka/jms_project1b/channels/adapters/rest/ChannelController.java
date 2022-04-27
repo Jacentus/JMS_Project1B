@@ -26,12 +26,14 @@ public class ChannelController {
     @Context
     private UriInfo uriInfo;
 
+    @Path("publicChannel")
     @POST
     public Response createPublicChannel(ChannelDTO channelDTO){
         Channel channel = channelService.createChannel(channelDTO.getChannelName());
         return Response.created(getLocation(channel.getChannelName())).build();
     }
 
+    @Path("privateChannel")
     @POST
     public Response createPrivateChannel(ChannelDTO channelDTO){
         Channel channel = channelService.createChannel(channelDTO.getChannelName(), channelDTO.getIsPrivate(), channelDTO.getPermittedUsers());

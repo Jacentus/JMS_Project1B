@@ -5,6 +5,8 @@ import lombok.Setter;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Singleton
@@ -20,7 +22,17 @@ public class JpaChannelRepository {
     }
 
     public Optional<ChannelEntity> getChannelByName(String channelName){
-        return Optional.ofNullable(entityManager.find(ChannelEntity.class, channelName));
+        ChannelEntity channelEntity = entityManager.createQuery("select c from Channel c where c.channelName = :channelName", ChannelEntity.class)
+                .setParameter("channelName", channelName)
+                .getSingleResult();
+        return Optional.ofNullable(channelEntity);
+    }
+
+    public Optional<List<String>> getChannelHistory(String channelName){
+        List<String> channelHistory = entityManager.createQuery("select c.channelHistory from Channel c where c.channelName = :channelName", String.class)
+                .setParameter("channelName", channelName)
+                .getResultList();
+        return Optional.ofNullable(channelHistory);
     }
 
 }

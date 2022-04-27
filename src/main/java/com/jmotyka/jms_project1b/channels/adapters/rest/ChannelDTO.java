@@ -11,10 +11,11 @@ import java.util.List;
 @Getter
 public class ChannelDTO {
 
+    private String id;
     @NotNull
     private String channelName;
     private Boolean isPrivate;
     private List<String> permittedUsers;
-    //private LinkedList<String> channelHistory;
+    private LinkedList<String> channelHistory;
 
 }
