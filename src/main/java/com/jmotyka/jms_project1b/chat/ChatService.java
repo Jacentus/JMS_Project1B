@@ -27,22 +27,28 @@ public class ChatService implements MessageListener {
 
     @SneakyThrows
     @Override
-    @Interceptors(ValidateUser.class)
+   // @Interceptors(ValidateUser.class)
     public void onMessage(Message message) {
         // z properties wiadomości wyciągam kanał oraz nadawcę
+
         String channelName = message.getStringProperty("channel");
+
         String sender = message.getStringProperty("sender");
+
         log.info("STRING PROPERTY: " + channelName + " SENDER: " + sender);
+
         // weryfikuję, czy nadawca może wysyłać na dany kanał TODO
         // jeśli tak, zapisuję wiadomośc w historii i publikuję wiadomość TODO
         // jeśli nie, to nie publikuję wiadomości TODO
-        //System.out.println("MESSAGE: " + message.getObjectProperty("Ogólny"));
+
         ChatMessage chatMessage = message.getBody(ChatMessage.class);
-        log.info(/*String addressee = */chatMessage.getAddressee());
-       // channelRepository.saveMessageToChannelHistory(chatMessage.getText(), chatMessage.getAddressee());
+
+        channelRepository.saveMessageToChannelHistory(chatMessage.getText(), channelName); // działa
+
         log.info("New message: " + chatMessage.getText());
     }
 
+/*
     @PostConstruct
     public void postConstruct(){
         log.info(getClass().getSimpleName() + ": postConstruct");
@@ -52,6 +58,7 @@ public class ChatService implements MessageListener {
     public void preDestroy(){
         log.info(getClass().getSimpleName() + ": preDestroy");
     }
+*/
 
 
 }

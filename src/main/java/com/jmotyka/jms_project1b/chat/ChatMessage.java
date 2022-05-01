@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.File;
 import java.io.Serializable;
 import java.time.Instant;
 
@@ -28,6 +29,10 @@ public class ChatMessage implements Serializable {
 
     public ChatMessage(String text){
         this.text = text;
+    }
+
+    public ChatMessage(byte[] file) {
+        this.file = file;
     }
 
 }

@@ -16,6 +16,5 @@ public class Channel {
     private List<String> permittedUsers;
     private LinkedList<String> channelHistory; // zsynchronizować
 
-    //private ArrayList<> activeUsers;
 
 }
