@@ -1,6 +1,6 @@
 package com.jmotyka.jms_project1b;
 
-import com.jmotyka.jms_project1b.commons.ChatMessage;
+import com.jmotyka.jms_project1b.chat.ChatMessage;
 import lombok.extern.java.Log;
 
 import javax.jms.*;
@@ -25,7 +25,9 @@ public class JmsListener {
         var proxyFactory = new ProxyFactory();
         ConnectionFactory connectionFactory = proxyFactory.createProxy(CONNECTION_FACTORY_JNDI_NAME);
         Topic topic = proxyFactory.createProxy(MESSAGES_TOPIC_JNDI_NAME);
-        try (JMSContext jmsContext = connectionFactory.createContext(); JMSConsumer consumer = jmsContext.createConsumer(topic)) {
+        try (JMSContext jmsContext = connectionFactory.createContext();
+             JMSConsumer consumer = jmsContext
+                     .createConsumer(topic, "channel = 'Warszawa'")) {
             consumer.setMessageListener(onMessage);
             new Scanner(System.in).next();
         }

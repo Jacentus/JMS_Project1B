@@ -15,4 +15,6 @@ public interface ChannelRepository {
 
     Optional<List<String>>getAllPublicChannels();
 
+    void saveMessageToChannelHistory(String text, String addressee);
+
 }

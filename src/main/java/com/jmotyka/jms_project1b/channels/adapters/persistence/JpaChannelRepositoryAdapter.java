@@ -42,4 +42,6 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
         return channelRepository.getAllPublicChannels();
     }
 
+    public void saveMessageToChannelHistory(String text, String addressee) { channelRepository.saveMessageToChannelHistory(text, addressee);}
+
 }

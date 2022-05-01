@@ -1,6 +1,8 @@
 package com.jmotyka.jms_project1b.channels.adapters.persistence;
 
+import com.jmotyka.jms_project1b.channels.domain.processors.NoSuchChannelException;
 import lombok.Setter;
+import lombok.extern.java.Log;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Singleton
+@Log
 public class JpaChannelRepository {
 
     @Setter
@@ -34,12 +37,19 @@ public class JpaChannelRepository {
         return Optional.ofNullable(publicChannels);
     }
 
-
     public Optional<List<String>> getChannelHistory(String channelName){
+        // TODO: VALIDATE IF PERMITTED TO SEE HISTORY
         List<String> channelHistory = entityManager.createQuery("select c.channelHistory from Channel c where c.channelName = :channelName", String.class)
                 .setParameter("channelName", channelName)
                 .getResultList();
         return Optional.ofNullable(channelHistory);
+    }
+
+    public void saveMessageToChannelHistory(String text, String addressee){
+        Optional<ChannelEntity> channelEntity = Optional.ofNullable(getChannelByName(addressee).orElseThrow(NoSuchChannelException::new));
+        channelEntity.get().getChannelHistory().add(text);
+        save(channelEntity.get());
+        log.info("message added to channel history");
     }
 
 }
