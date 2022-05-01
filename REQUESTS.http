@@ -19,7 +19,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "channelName": "Gdańsk"
+  "channelName": "Ogólny"
 }
 
 #####
@@ -37,3 +37,7 @@ Accept: application/json
 #####
 
 GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels
+
+#####
+
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Ogólny

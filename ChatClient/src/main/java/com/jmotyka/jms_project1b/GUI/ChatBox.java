@@ -1,6 +1,7 @@
 package com.jmotyka.jms_project1b.GUI;
 
 import com.jmotyka.jms_project1b.FileConverter;
+import com.jmotyka.jms_project1b.JmsListener;
 import com.jmotyka.jms_project1b.ProxyFactory;
 import com.jmotyka.jms_project1b.chat.ChatMessage;
 
@@ -12,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.jmotyka.jms_project1b.ClientApplication.CONNECTION_FACTORY_JNDI_NAME;
-import static com.jmotyka.jms_project1b.JmsListener.MESSAGES_TOPIC_JNDI_NAME;
+import static com.jmotyka.jms_project1b.ClientApplication.MESSAGES_TOPIC_JNDI_NAME;
 
 public class ChatBox {
 
@@ -20,17 +21,18 @@ public class ChatBox {
     protected Scanner scanner;
     protected FileConverter fileConverter;
     private final String channelName;
-
+    private String userName;
     private ProxyFactory proxyFactory;
 
     private ConnectionFactory connectionFactory;
 
     private Topic topic;
 
-    public ChatBox(Scanner scanner, FileConverter fileConverter, String channelName) {
+    public ChatBox(Scanner scanner, FileConverter fileConverter, String channelName, String userName) {
         this.scanner = scanner;
         this.fileConverter = fileConverter;
         this.channelName = channelName;
+        this.userName = userName;
         try {
             this.proxyFactory = new ProxyFactory();
             this.connectionFactory = proxyFactory.createProxy(CONNECTION_FACTORY_JNDI_NAME);
@@ -41,17 +43,16 @@ public class ChatBox {
     }
 
     public void launchChatBox() {
- /*       ProxyFactory proxyFactory = new ProxyFactory();
-        ConnectionFactory connectionFactory = proxyFactory.createProxy(CONNECTION_FACTORY_JNDI_NAME);
-        Topic topic = proxyFactory.createProxy(MESSAGES_TOPIC_JNDI_NAME);*/
-
         System.out.println("** START CHATTING **");
         System.out.println("** TYPE #EXIT TO QUIT, TYPE #FILE TO SEND A FILE **");
         String text;
+        JmsListener messageListener = new JmsListener(channelName, userName, topic, connectionFactory);
+        messageListener.listen();
         while (true) {
             text = scanner.nextLine();
             if (text.equalsIgnoreCase("#EXIT")) {
                 System.out.println("Exiting chatroom...");
+                messageListener.setExit(true);  //TODO: NOT WORKING
                 break;
             }
             if (text.equalsIgnoreCase("#FILE")) {
@@ -70,7 +71,7 @@ public class ChatBox {
         try (JMSContext jmsContext = connectionFactory.createContext()) {
             Message message = jmsContext.createObjectMessage(new ChatMessage(text));
             message.setStringProperty("channel", channelName);
-            //message.setStringProperty("sender", "Jacek"); TODO: identify senders
+            message.setStringProperty("sender", userName); //TODO: identify senders
             jmsContext.createProducer().send(topic, message);
         } catch (JMSException e) {
             e.printStackTrace();
@@ -84,7 +85,7 @@ public class ChatBox {
         try (JMSContext jmsContext = connectionFactory.createContext()) {
             Message message = jmsContext.createObjectMessage(new ChatMessage(bytes));
             message.setStringProperty("channel", channelName);
-            //message.setStringProperty("sender", "Jacek"); TODO: identify senders
+            message.setStringProperty("sender", userName);// TODO: identify senders
             jmsContext.createProducer().send(topic, message);
         } catch (JMSException e) {
             e.printStackTrace();
@@ -94,13 +95,3 @@ public class ChatBox {
 
     }
 }
-/*            try
-                    (
-    JMSContext jmsContext = connectionFactory.createContext())
-    {
-        Message message = jmsContext.createObjectMessage(new ChatMessage("THIS IS MY MESSAGE"));
-        message.setStringProperty("channel", "Magiczny");
-        message.setStringProperty("sender", "Jacek");
-
-        jmsContext.createProducer().send(topic, message);
-    }*/

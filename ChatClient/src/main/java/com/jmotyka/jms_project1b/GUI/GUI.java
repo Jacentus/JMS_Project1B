@@ -32,6 +32,7 @@ public class GUI {
         Scanner scanner = new Scanner(System.in);
         String username = scanner.nextLine();
         client.createNewUser(username);
+        client.setUsername(username);
         return username;
     }
 
@@ -44,6 +45,7 @@ public class GUI {
             choice = scanner.nextLine();
             switch (choice) {
                 case "1":
+                    client.getAllPublicChannels();
         /*            client.getLock().getServerResponseLock().lock();
                     try {
                         client.sendRequest(new GetAllChannelsRequest(client.getUsername(), Request.RequestType.GET_ALL_CHANNELS));
@@ -54,17 +56,17 @@ public class GUI {
                     break;
                 case "2":
                     System.out.println("Type channel name: ");
-                   /* String channelName = scanner.nextLine();
-                    client.getLock().getServerResponseLock().lock();
+                    String channelName = scanner.nextLine();
+                    //client.getLock().getServerResponseLock().lock();
                     try {
-                        client.sendRequest(new JoinPublicChannelRequest(client.getUsername(), Request.RequestType.JOIN_PUBLIC_CHANNEL, channelName));
-                        client.getLock().getResponseHandled().await();
+                        //client.sendRequest(new JoinPublicChannelRequest(client.getUsername(), Request.RequestType.JOIN_PUBLIC_CHANNEL, channelName));
+                        //client.getLock().getResponseHandled().await();
                     } finally {
-                        client.getLock().getServerResponseLock().unlock();
+                        //client.getLock().getServerResponseLock().unlock();
                     }
-                    ChatBox publicChatBox = new ChatBox(scanner, fileConverter, client, channelName);
+                    ChatBox publicChatBox = new ChatBox(scanner, fileConverter, channelName, client.getUsername());
                     publicChatBox.launchChatBox();
-                    client.sendRequest(new RemoveFromChannelRequest(client.getUsername(), Request.RequestType.REMOVE_FROM_CHANNEL, channelName));*/
+                    //client.sendRequest(new RemoveFromChannelRequest(client.getUsername(), Request.RequestType.REMOVE_FROM_CHANNEL, channelName));*/
                     break;
                 case "3":
                     System.out.println("Type channel name: ");

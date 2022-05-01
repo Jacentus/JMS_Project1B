@@ -39,13 +39,14 @@ public class JpaChannelRepository {
 
     public Optional<List<String>> getChannelHistory(String channelName){
         // TODO: VALIDATE IF PERMITTED TO SEE HISTORY
-        List<String> channelHistory = entityManager.createQuery("select c.channelHistory from Channel c where c.channelName = :channelName", String.class)
+       ChannelEntity channelEntity = entityManager.createQuery("select c from Channel c JOIN FETCH c.channelHistory where c.channelName = :channelName ", ChannelEntity.class)
                 .setParameter("channelName", channelName)
-                .getResultList();
-        return Optional.ofNullable(channelHistory);
+                .getSingleResult();
+        Optional<List<String>> channelHistory = Optional.ofNullable(channelEntity.getChannelHistory());
+        return channelHistory;
     }
 
-    public void saveMessageToChannelHistory(String text, String addressee){
+    public void saveMessageToChannelHistory(String text, String addressee){ // chyba jednak nie działa
         Optional<ChannelEntity> channelEntity = Optional.ofNullable(getChannelByName(addressee).orElseThrow(NoSuchChannelException::new));
         channelEntity.get().getChannelHistory().add(text);
         save(channelEntity.get());

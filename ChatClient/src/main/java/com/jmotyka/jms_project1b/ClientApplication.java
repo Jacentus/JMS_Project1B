@@ -14,10 +14,8 @@ import javax.ws.rs.client.*;
 
 public class ClientApplication {
 
-
     public static final String CONNECTION_FACTORY_JNDI_NAME = "jms/RemoteConnectionFactory";
-
-
+    public static final String MESSAGES_TOPIC_JNDI_NAME = "jms/topic/Messages";
     @SneakyThrows
     public static void main(String[] args) throws NamingException {
 
@@ -30,24 +28,10 @@ public class ClientApplication {
         String username = gui.askForUsername();
 
         //gui.setClient(client);
-        //gui.chooseFromMenu();
-
+        gui.chooseFromMenu();
 
         restClient.getClient().close();
 
-        /////////////////////// TODO WYSYŁANIE PRZENIEŚĆ DO CHATBOXA /////////
-
-/*        try
-                (JMSContext jmsContext = connectionFactory.createContext())
-        {
-            Message message = jmsContext.createObjectMessage(new ChatMessage("THIS IS MY MESSAGE"));
-            message.setStringProperty("channel", "Magiczny");
-            message.setStringProperty("sender", "Jacek");
-
-            jmsContext.createProducer().send(topic, message);
-        }*/
-
     }
-
 
 }
