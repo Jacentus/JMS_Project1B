@@ -3,12 +3,8 @@ package com.jmotyka.jms_project1b.channels.adapters.persistence;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import java.util.LinkedList;
-import java.util.List;
+import javax.persistence.*;
+import java.util.*;
 
 @NamedQuery(name = ChannelEntity.GET_BY_CHANNELNAME, query = "select c from Channel c where c.channelName = :channelName")
 @Entity(name = "Channel")
@@ -24,9 +20,9 @@ public class ChannelEntity {
     private boolean isPrivate;
 
     @ElementCollection
-    private List<String> permittedUsers;
+    private Set<String> permittedUsers = new HashSet<>();
 
     @ElementCollection
-    private List<String> channelHistory;
+    private List<String> channelHistory = new ArrayList<>();
 
 }

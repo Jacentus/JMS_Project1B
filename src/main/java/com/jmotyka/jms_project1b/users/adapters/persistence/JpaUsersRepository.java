@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-@Singleton //w beans.xml dałem annotated
+@Singleton
 @RequiredArgsConstructor
 public class JpaUsersRepository { // to do poprawki wszystko po zajęciach z hibernate'a
 
@@ -19,10 +19,8 @@ public class JpaUsersRepository { // to do poprawki wszystko po zajęciach z hib
 
     @Transactional // dodałem
     public UserEntity save(UserEntity userEntity){
-        //entityManager.getTransaction().begin();
         System.out.println("USER ENTITY Z REPOSITORY: " + userEntity);
         entityManager.persist(userEntity);
-        //entityManager.flush();
         return userEntity;
     }
 

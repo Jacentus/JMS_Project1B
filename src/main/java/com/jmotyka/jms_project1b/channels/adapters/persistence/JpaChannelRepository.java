@@ -32,18 +32,24 @@ public class JpaChannelRepository {
     }
 
     public Optional<List<String>>getAllPublicChannels(){
-        List<String> publicChannels = entityManager.createQuery("select c.channelName from Channel c", String.class)
+        List<String> publicChannels = entityManager.createQuery("select c.channelName from Channel c where c.isPrivate = false", String.class)
                 .getResultList();
         return Optional.ofNullable(publicChannels);
     }
 
-    public Optional<List<String>> getChannelHistory(String channelName){
-        // TODO: VALIDATE IF PERMITTED TO SEE HISTORY
+    public Optional<List<String>> getChannelHistory(String channelName, String username) throws NotAllowedToGetHistoryException {
        ChannelEntity channelEntity = entityManager.createQuery("select c from Channel c JOIN FETCH c.channelHistory where c.channelName = :channelName ", ChannelEntity.class)
                 .setParameter("channelName", channelName)
                 .getSingleResult();
-        Optional<List<String>> channelHistory = Optional.ofNullable(channelEntity.getChannelHistory());
-        return channelHistory;
+       if(Optional.of(channelEntity.isPrivate()==false).get()){
+           return Optional.ofNullable(channelEntity.getChannelHistory());
+        }
+       else if (Optional.of(channelEntity.getPermittedUsers().contains(username)).get()) {
+            Optional<List<String>> channelHistory = Optional.ofNullable(channelEntity.getChannelHistory());
+            return channelHistory;
+        } else {
+            throw new NotAllowedToGetHistoryException();
+        }
     }
 
     public void saveMessageToChannelHistory(String text, String addressee){ // chyba jednak nie działa

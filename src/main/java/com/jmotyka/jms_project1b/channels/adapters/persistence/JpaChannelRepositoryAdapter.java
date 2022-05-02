@@ -33,8 +33,8 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
     }
 
     @Override
-    public Optional<List<String>> getChannelHistory(String channelName) {
-        return channelRepository.getChannelHistory(channelName);
+    public Optional<List<String>> getChannelHistory(String channelName, String username) throws NotAllowedToGetHistoryException {
+        return channelRepository.getChannelHistory(channelName, username);
     }
 
     @Override

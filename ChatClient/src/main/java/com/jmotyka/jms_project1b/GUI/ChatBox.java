@@ -4,6 +4,7 @@ import com.jmotyka.jms_project1b.FileConverter;
 import com.jmotyka.jms_project1b.JmsListener;
 import com.jmotyka.jms_project1b.ProxyFactory;
 import com.jmotyka.jms_project1b.chat.ChatMessage;
+import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
 
 import javax.jms.*;
 import javax.naming.NamingException;
@@ -21,18 +22,18 @@ public class ChatBox {
     protected Scanner scanner;
     protected FileConverter fileConverter;
     private final String channelName;
-    private String userName;
+    private UserDTO user;
     private ProxyFactory proxyFactory;
 
     private ConnectionFactory connectionFactory;
 
     private Topic topic;
 
-    public ChatBox(Scanner scanner, FileConverter fileConverter, String channelName, String userName) {
+    public ChatBox(Scanner scanner, FileConverter fileConverter, String channelName, UserDTO user) {
         this.scanner = scanner;
         this.fileConverter = fileConverter;
         this.channelName = channelName;
-        this.userName = userName;
+        this.user = user;
         try {
             this.proxyFactory = new ProxyFactory();
             this.connectionFactory = proxyFactory.createProxy(CONNECTION_FACTORY_JNDI_NAME);
@@ -46,7 +47,7 @@ public class ChatBox {
         System.out.println("** START CHATTING **");
         System.out.println("** TYPE #EXIT TO QUIT, TYPE #FILE TO SEND A FILE **");
         String text;
-        JmsListener messageListener = new JmsListener(channelName, userName, topic, connectionFactory);
+        JmsListener messageListener = new JmsListener(channelName, user, topic, connectionFactory);
         messageListener.listen();
         while (true) {
             text = scanner.nextLine();
@@ -71,7 +72,7 @@ public class ChatBox {
         try (JMSContext jmsContext = connectionFactory.createContext()) {
             Message message = jmsContext.createObjectMessage(new ChatMessage(text));
             message.setStringProperty("channel", channelName);
-            message.setStringProperty("sender", userName); //TODO: identify senders
+            message.setStringProperty("sender", user.getUserName()); //TODO: identify senders
             jmsContext.createProducer().send(topic, message);
         } catch (JMSException e) {
             e.printStackTrace();
@@ -85,7 +86,7 @@ public class ChatBox {
         try (JMSContext jmsContext = connectionFactory.createContext()) {
             Message message = jmsContext.createObjectMessage(new ChatMessage(bytes));
             message.setStringProperty("channel", channelName);
-            message.setStringProperty("sender", userName);// TODO: identify senders
+            message.setStringProperty("sender", user.getUserName());// TODO: identify senders
             jmsContext.createProducer().send(topic, message);
         } catch (JMSException e) {
             e.printStackTrace();

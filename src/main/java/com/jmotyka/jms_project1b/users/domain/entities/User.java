@@ -14,7 +14,7 @@ public class User {
     private String id;
     @Setter
     private String userName;
-    private Instant createdOn; // to mogłoby być jakieś wstrzykiwane metadane
+    private Instant timestamp; // to mogłoby być jakieś wstrzykiwane metadane
 
     /* @ValidateUser // czy tak?
    public User(String userName) {
@@ -27,7 +27,7 @@ public class User {
         return "User{" +
                 "id='" + id + '\'' +
                 ", userName='" + userName + '\'' +
-                ", createdOn=" + createdOn +
+                ", timestamp=" + timestamp +
                 '}';
     }
 }

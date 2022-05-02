@@ -1,6 +1,7 @@
 package com.jmotyka.jms_project1b.channels.adapters.rest;
 
 
+import com.jmotyka.jms_project1b.channels.adapters.persistence.NotAllowedToGetHistoryException;
 import com.jmotyka.jms_project1b.channels.domain.entities.Channel;
 import com.jmotyka.jms_project1b.channels.domain.ports.ChannelService;
 import lombok.Setter;
@@ -47,13 +48,16 @@ public class ChannelController {
         return Response.ok(channelService.getAllPublicChannels()).build();
     }
 
-    @Path("history/{channelName}")
+    @Path("history/{channelName}/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
-    public Response getChannelHistory(@PathParam("channelName") String channelName){ //TODO
-        return Response.ok(channelService.getChannelHistory(channelName)).build();
+    public Response getChannelHistory(@PathParam("channelName") String channelName, @PathParam("userName") String username) {
+        try {
+            return Response.ok(channelService.getChannelHistory(channelName, username)).build();
+        } catch (NotAllowedToGetHistoryException e) {
+            return Response.status(403).build();
+        }
     }
-
 
     private URI getLocation(String channelName){
         return uriInfo.getAbsolutePathBuilder().path(channelName).build();

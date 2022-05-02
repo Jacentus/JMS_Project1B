@@ -1,6 +1,7 @@
 package com.jmotyka.jms_project1b;
 
 import com.jmotyka.jms_project1b.chat.ChatMessage;
+import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -15,23 +16,29 @@ public class JmsListener {
     private Topic topic;
     private ConnectionFactory connectionFactory;
     private String channelName;
-    private String userName;
+    private UserDTO user;
     @Setter
     private volatile boolean exit = false;
 
-    public JmsListener(String channelName, String userName, Topic topic, ConnectionFactory connectionFactory) {
+    public JmsListener(String channelName, UserDTO user, Topic topic, ConnectionFactory connectionFactory) {
         this.channelName = channelName;
-        this.userName = userName;
+        this.user = user;
         this.topic = topic;
         this.connectionFactory = connectionFactory;
     }
 
     private static MessageListener onMessage = message -> {
+/*        if (exit){
+            System.out.println("STOPPED LISTENING TO MESSAGES ON " + channelName);
+        }*/
         log.info("***** MESSAGE RECEIVED ***** ");
         try {
-            log.info(message.getBody(ChatMessage.class).getTimestamp().toString());
-            log.info(message.getBody(ChatMessage.class).getText());
+            log.info("SENDER: " + message.getStringProperty("sender") + " MESSAGE SEND TO CHANNEL: " + message.getStringProperty("channel"));
+            log.info("TIMESTAMP: " + message.getBody(ChatMessage.class).getTimestamp().toString());
+            log.info("TEXT: " + message.getBody(ChatMessage.class).getText());
+
             //TODO: CHECK IF FILE HAS BEEN SEND
+
             if(message.getBody(ChatMessage.class).getFile() != null){
                 String filePath = "D:\\RECEIVED_FILES\\" + "newFile";
                 System.out.println("path: " + filePath);
@@ -56,26 +63,8 @@ public class JmsListener {
                 JMSContext jmsContext = connectionFactory.createContext();
                 JMSConsumer consumer = jmsContext.createConsumer(topic, "channel = '" + channelName + "'");
                 consumer.setMessageListener(onMessage);
-                if (exit){
-                    consumer.close();
-                    System.out.println("STOPPED LISTENING TO MESSAGES ON " + channelName);
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
-/*    public static void main(String[] args) throws NamingException {
-        var proxyFactory = new ProxyFactory();
-        ConnectionFactory connectionFactory = proxyFactory.createProxy(CONNECTION_FACTORY_JNDI_NAME);
-        Topic topic = proxyFactory.createProxy(MESSAGES_TOPIC_JNDI_NAME);
-        try (JMSContext jmsContext = connectionFactory.createContext();
-
-             JMSConsumer consumer = jmsContext
-                     .createConsumer(topic, "channel = 'Magiczny'")) {
-            //jmsContext.setClientID("Jacek");
-            consumer.setMessageListener(onMessage);
-            new Scanner(System.in).next();
-        }
-    }*/

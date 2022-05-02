@@ -14,7 +14,7 @@ public class UserDTO {
     @NotNull
     private String userName;
 
-    private Instant createdOn;
+    private Instant timestamp;
 
     public UserDTO(String userName) {
         this.userName = userName;
@@ -25,7 +25,8 @@ public class UserDTO {
         return "UserDTO{" +
                 "id='" + id + '\'' +
                 ", userName='" + userName + '\'' +
-                ", createdOn=" + createdOn +
+                ", createdOn=" + timestamp +
                 '}';
     }
+
 }

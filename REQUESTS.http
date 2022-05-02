@@ -19,7 +19,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "channelName": "Ogólny"
+  "channelName": "Świetny"
 }
 
 #####
@@ -29,7 +29,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "channelName": "Magiczny",
+  "channelName": "Krzywy",
   "isPrivate": true,
   "permittedUsers": ["Jacek", "Marek"]
 }
@@ -40,4 +40,4 @@ GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels
 
 #####
 
-GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Ogólny
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Ogólny/Marek

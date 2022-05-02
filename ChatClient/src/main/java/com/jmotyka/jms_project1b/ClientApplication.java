@@ -2,13 +2,9 @@ package com.jmotyka.jms_project1b;
 
 import com.jmotyka.jms_project1b.GUI.GUI;
 import com.jmotyka.jms_project1b.chat.ChatMessage;
+import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
 import lombok.Getter;
 import lombok.SneakyThrows;
-
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSContext;
-import javax.jms.Message;
-import javax.jms.Topic;
 import javax.naming.NamingException;
 import javax.ws.rs.client.*;
 
@@ -25,9 +21,9 @@ public class ClientApplication {
 
         GUI gui = new GUI(restClient);
 
-        String username = gui.askForUsername();
+        UserDTO user  = gui.askForUsername();
 
-        //gui.setClient(client);
+        gui.setUser(user);
         gui.chooseFromMenu();
 
         restClient.getClient().close();

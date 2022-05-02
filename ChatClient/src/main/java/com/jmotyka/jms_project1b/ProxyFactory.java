@@ -11,7 +11,6 @@ public class ProxyFactory {
     private static final String PROVIDER_URL = "http-remoting://localhost:8080";
     private static final String CLIENT_EJB_CONTEXT = "jboss.naming.client.ejb.context";
     private final InitialContext initialContext;
-
     public ProxyFactory() throws NamingException {
         this(prepareJndiProperties());
     }

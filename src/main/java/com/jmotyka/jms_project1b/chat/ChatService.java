@@ -35,7 +35,7 @@ public class ChatService implements MessageListener {
 
         String sender = message.getStringProperty("sender");
 
-        log.info("STRING PROPERTY: " + channelName + " SENDER: " + sender);
+        log.info("CHANNEL" + channelName + " SENDER: " + sender);
 
         // weryfikuję, czy nadawca może wysyłać na dany kanał TODO
         // jeśli tak, zapisuję wiadomośc w historii i publikuję wiadomość TODO
@@ -45,7 +45,7 @@ public class ChatService implements MessageListener {
 
         channelRepository.saveMessageToChannelHistory(chatMessage.getText(), channelName); // działa
 
-        log.info("New message: " + chatMessage.getText());
+        log.info("MESSAGE: " + chatMessage.getText());
     }
 
 /*

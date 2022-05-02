@@ -31,7 +31,8 @@ public class UserController {
     public Response createUser(UserDTO userDTO){
         User user = usersService.createUser(userMapper.toDomain(userDTO).getUserName());
         System.out.println("USER z Restcontroller: " + user);
-        return Response.created(getLocation(user.getId())).build();
+        UserDTO userDto = userMapper.toDto(user);
+        return Response.ok(userDto).build();
     }
 
     @GET

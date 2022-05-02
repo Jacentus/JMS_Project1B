@@ -2,11 +2,12 @@ package com.jmotyka.jms_project1b.GUI;
 
 import com.jmotyka.jms_project1b.FileConverter;
 import com.jmotyka.jms_project1b.RestClient;
+import com.jmotyka.jms_project1b.commons.ExceptionDto;
+import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
+import com.jmotyka.jms_project1b.users.domain.processors.NoSuchUserException;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.ws.rs.client.Client;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GUI {
@@ -16,6 +17,9 @@ public class GUI {
     @Getter
     @Setter
     private RestClient client;
+    @Getter
+    @Setter
+    private UserDTO user;
 
     public GUI(RestClient client) {
         this.client = client;
@@ -27,13 +31,18 @@ public class GUI {
         System.out.println("[3] create private channel [4] join private channel [5] download message history");
     }
 
-    public String askForUsername() {
+    public UserDTO askForUsername() {
         System.out.println("Enter username: ");
         Scanner scanner = new Scanner(System.in);
         String username = scanner.nextLine();
-        client.createNewUser(username);
-        client.setUsername(username);
-        return username;
+       // try{
+        //UserDTO user = client.getUserByName(username);
+        //return user;
+       // } catch (Exception e){
+           // UserDTO user = client.createNewUser(username);
+            UserDTO user = new UserDTO(username);
+            return user;
+        //}
     }
 
     public void chooseFromMenu() throws InterruptedException {
@@ -57,6 +66,9 @@ public class GUI {
                 case "2":
                     System.out.println("Type channel name: ");
                     String channelName = scanner.nextLine();
+
+                    //TODO: ADD USER TO PERMITTED USERS OF PUBLIC CHANNEL;
+
                     //client.getLock().getServerResponseLock().lock();
                     try {
                         //client.sendRequest(new JoinPublicChannelRequest(client.getUsername(), Request.RequestType.JOIN_PUBLIC_CHANNEL, channelName));
@@ -64,7 +76,7 @@ public class GUI {
                     } finally {
                         //client.getLock().getServerResponseLock().unlock();
                     }
-                    ChatBox publicChatBox = new ChatBox(scanner, fileConverter, channelName, client.getUsername());
+                    ChatBox publicChatBox = new ChatBox(scanner, fileConverter, channelName, user);
                     publicChatBox.launchChatBox();
                     //client.sendRequest(new RemoveFromChannelRequest(client.getUsername(), Request.RequestType.REMOVE_FROM_CHANNEL, channelName));*/
                     break;

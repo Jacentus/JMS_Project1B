@@ -21,7 +21,7 @@ public class UsersProcessor implements UsersService {
         User user = User.builder()
                 .id(idGenerator.getNext())
                 .userName(userName)
-                .createdOn(timeProvider.getTimestamp())
+                .timestamp(timeProvider.getTimestamp())
                 .build();
         System.out.println("USER FROM USER SERVICE: " + user);
         return usersRepository.save(user); //validate User!!

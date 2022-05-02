@@ -1,5 +1,6 @@
 package com.jmotyka.jms_project1b.channels.domain.processors;
 
+import com.jmotyka.jms_project1b.channels.adapters.persistence.NotAllowedToGetHistoryException;
 import com.jmotyka.jms_project1b.channels.domain.entities.Channel;
 import com.jmotyka.jms_project1b.channels.domain.ports.ChannelRepository;
 import com.jmotyka.jms_project1b.channels.domain.ports.ChannelService;
@@ -42,8 +43,8 @@ public class ChannelProcessor implements ChannelService {
     }
 
     @Override
-    public Optional<List<String>> getChannelHistory(String channelName) {
-        return channelRepository.getChannelHistory(channelName);
+    public Optional<List<String>> getChannelHistory(String channelName, String username) throws NotAllowedToGetHistoryException {
+        return channelRepository.getChannelHistory(channelName, username);
     }
 
     @Override

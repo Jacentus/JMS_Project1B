@@ -25,14 +25,14 @@ public class UserEntity implements Serializable {
     @Column(name = "USERNAME")
     private String userName;
     @Column(name = "TIMESTAMP")
-    private Instant createdOn;
+    private Instant timestamp;
 
     @Override
     public String toString() {
         return "UserEntity{" +
                 "id='" + id + '\'' +
                 ", userName='" + userName + '\'' +
-                ", createdOn=" + createdOn +
+                ", timestamp=" + timestamp +
                 '}';
     }
 
