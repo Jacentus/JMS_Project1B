@@ -16,14 +16,11 @@ public class ClientApplication {
     public static void main(String[] args) throws NamingException {
 
         Client client = ClientBuilder.newClient();
-
         RestClient restClient = new RestClient(client);
-
         GUI gui = new GUI(restClient);
 
         UserDTO user  = gui.askForUsername();
 
-        gui.setUser(user);
         gui.chooseFromMenu();
 
         restClient.getClient().close();

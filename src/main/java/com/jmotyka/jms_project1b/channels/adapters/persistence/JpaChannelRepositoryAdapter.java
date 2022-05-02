@@ -44,4 +44,8 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
 
     public void saveMessageToChannelHistory(String text, String addressee) { channelRepository.saveMessageToChannelHistory(text, addressee);}
 
+    @Override
+    public void addUserToPermittedUsers(String channelName, String sender) {
+        channelRepository.addUserToPermittedUsers(channelName, sender);
+    }
 }

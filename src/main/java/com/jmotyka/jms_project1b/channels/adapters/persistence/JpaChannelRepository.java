@@ -41,22 +41,28 @@ public class JpaChannelRepository {
        ChannelEntity channelEntity = entityManager.createQuery("select c from Channel c JOIN FETCH c.channelHistory where c.channelName = :channelName ", ChannelEntity.class)
                 .setParameter("channelName", channelName)
                 .getSingleResult();
-       if(Optional.of(channelEntity.isPrivate()==false).get()){
-           return Optional.ofNullable(channelEntity.getChannelHistory());
+       if(Optional.of(channelEntity.getPermittedUsers().contains(username)).get()) {
+               return Optional.ofNullable(channelEntity.getChannelHistory());
         }
-       else if (Optional.of(channelEntity.getPermittedUsers().contains(username)).get()) {
-            Optional<List<String>> channelHistory = Optional.ofNullable(channelEntity.getChannelHistory());
-            return channelHistory;
-        } else {
+       else {
             throw new NotAllowedToGetHistoryException();
         }
     }
 
-    public void saveMessageToChannelHistory(String text, String addressee){ // chyba jednak nie działa
-        Optional<ChannelEntity> channelEntity = Optional.ofNullable(getChannelByName(addressee).orElseThrow(NoSuchChannelException::new));
+    public void saveMessageToChannelHistory(String text, String channelName){
+        Optional<ChannelEntity> channelEntity = Optional.ofNullable(getChannelByName(channelName).orElseThrow(NoSuchChannelException::new));
         channelEntity.get().getChannelHistory().add(text);
         save(channelEntity.get());
         log.info("message added to channel history");
+    }
+
+    public void addUserToPermittedUsers(String channelName, String sender) {
+        Optional<ChannelEntity> channelEntity = Optional.ofNullable(getChannelByName(channelName).orElseThrow(NoSuchChannelException::new));
+        if(!channelEntity.get().getPermittedUsers().contains(sender)) {
+            channelEntity.get().getPermittedUsers().add(sender);
+            save(channelEntity.get());
+            log.info("USER ADDED TO PERMITTED USERS LIST");
+        }
     }
 
 }

@@ -54,6 +54,7 @@ public class ChatBox {
             if (text.equalsIgnoreCase("#EXIT")) {
                 System.out.println("Exiting chatroom...");
                 messageListener.setExit(true);  //TODO: NOT WORKING
+                messageListener.getConsumer().close();
                 break;
             }
             if (text.equalsIgnoreCase("#FILE")) {
@@ -70,7 +71,7 @@ public class ChatBox {
 
     private void sendMessage(String text) {
         try (JMSContext jmsContext = connectionFactory.createContext()) {
-            Message message = jmsContext.createObjectMessage(new ChatMessage(text));
+            Message message = jmsContext.createObjectMessage(new ChatMessage(user.getUserName(), text));
             message.setStringProperty("channel", channelName);
             message.setStringProperty("sender", user.getUserName()); //TODO: identify senders
             jmsContext.createProducer().send(topic, message);
@@ -83,8 +84,9 @@ public class ChatBox {
 
     private void sendFile(File file) {
         byte[] bytes = fileConverter.transformIntoBytes(file);
+        String fileName = file.getName();
         try (JMSContext jmsContext = connectionFactory.createContext()) {
-            Message message = jmsContext.createObjectMessage(new ChatMessage(bytes));
+            Message message = jmsContext.createObjectMessage(new ChatMessage(bytes, fileName));
             message.setStringProperty("channel", channelName);
             message.setStringProperty("sender", user.getUserName());// TODO: identify senders
             jmsContext.createProducer().send(topic, message);

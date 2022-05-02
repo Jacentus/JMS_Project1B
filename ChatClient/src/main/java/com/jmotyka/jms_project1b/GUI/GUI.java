@@ -27,11 +27,11 @@ public class GUI {
 
     public void printMenu() {
         System.out.println("***** CHAT APP *****");
-        System.out.println("[1] show open channels [2] join/create public channel");
+        System.out.println("[1] show open channels [2] join channel");
         System.out.println("[3] create private channel [4] join private channel [5] download message history");
     }
 
-    public UserDTO askForUsername() {
+    public UserDTO askForUsername() { //TODO: CREATE/GET USER DETAILS FROM DATABASE
         System.out.println("Enter username: ");
         Scanner scanner = new Scanner(System.in);
         String username = scanner.nextLine();
@@ -40,7 +40,8 @@ public class GUI {
         //return user;
        // } catch (Exception e){
            // UserDTO user = client.createNewUser(username);
-            UserDTO user = new UserDTO(username);
+            UserDTO user = new UserDTO(username); //TODO: IDENTIFY USERS BY ID
+            this.setUser(user);
             return user;
         //}
     }
@@ -54,7 +55,7 @@ public class GUI {
             choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    client.getAllPublicChannels();
+                    client.getAllPublicChannels(); //TODO: IMPLEMENT REST CLIENT REQUEST
         /*            client.getLock().getServerResponseLock().lock();
                     try {
                         client.sendRequest(new GetAllChannelsRequest(client.getUsername(), Request.RequestType.GET_ALL_CHANNELS));
@@ -126,8 +127,10 @@ public class GUI {
                     break;
                 case "5":
                     System.out.println("Type name of channel you wish to get history from: ");
-/*                    String historicChannelName = scanner.nextLine();
-                    client.getLock().getServerResponseLock().lock();
+                    String historicChannelName = scanner.nextLine();
+                    //TODO: REST CLIENT REQUEST
+
+                    /* client.getLock().getServerResponseLock().lock();
                     try {
                         client.sendRequest(new GetChannelHistoryRequest(client.getUsername(), historicChannelName, Request.RequestType.GET_CHANNEL_HISTORY));
                         client.getLock().getResponseHandled().await();

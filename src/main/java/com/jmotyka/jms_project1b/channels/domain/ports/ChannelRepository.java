@@ -18,4 +18,6 @@ public interface ChannelRepository {
 
     void saveMessageToChannelHistory(String text, String addressee);
 
+    void addUserToPermittedUsers(String channelName, String sender);
+
 }
