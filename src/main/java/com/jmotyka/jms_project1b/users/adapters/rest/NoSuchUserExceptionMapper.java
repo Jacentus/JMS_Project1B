@@ -16,4 +16,5 @@ public class NoSuchUserExceptionMapper implements ExceptionMapper<NoSuchUserExce
                 .entity(new ExceptionDto("No such user"))
                 .build();
     }
+
 }

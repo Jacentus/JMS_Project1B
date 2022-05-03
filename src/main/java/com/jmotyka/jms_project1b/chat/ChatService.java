@@ -34,7 +34,7 @@ public class ChatService implements MessageListener {
         // z properties wiadomości wyciągam kanał oraz nadawcę
         String channelName = message.getStringProperty("channel");
         String sender = message.getStringProperty("sender");
-        log.info("CHANNEL" + channelName + " SENDER: " + sender);
+        log.info("CHANNEL " + channelName + ", SENDER: " + sender);
         // weryfikuję, czy nadawca może wysyłać na dany kanał TODO
 
         // jeśli tak, to dodaję go do listy uprawnionych userów oraz zapisuję wiadomość w historii

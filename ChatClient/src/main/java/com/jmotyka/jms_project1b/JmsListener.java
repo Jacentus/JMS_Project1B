@@ -10,6 +10,7 @@ import lombok.extern.java.Log;
 import javax.jms.*;
 import java.io.*;
 import java.time.Instant;
+import java.util.Objects;
 
 @Log
 @AllArgsConstructor
@@ -85,8 +86,9 @@ public class JmsListener implements MessageListener {
             //log.info("SENDER: " + message.getStringProperty("sender") + " MESSAGE SEND TO CHANNEL: " + message.getStringProperty("channel"));
             //log.info("TIMESTAMP: " + message.getBody(ChatMessage.class).getTimestamp().toString());
             //log.info("TEXT: " + message.getBody(ChatMessage.class).getText());
-            System.out.println(message.getBody(ChatMessage.class));
-
+            if(!Objects.equals(message.getStringProperty("sender"), user.getUserName())) {
+                System.out.println(message.getBody(ChatMessage.class));
+            }
             if(message.getBody(ChatMessage.class).getFile() != null){
                 String filePath = "D:\\RECEIVED_FILES\\" + message.getBody(ChatMessage.class).getFileName();
                 //System.out.println("path: " + filePath);

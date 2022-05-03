@@ -129,7 +129,7 @@ public class GUI {
                     System.out.println("Type name of channel you wish to get history from: ");
                     String historicChannelName = scanner.nextLine();
                     //TODO: REST CLIENT REQUEST
-
+                    System.out.println("HISTORIA Z GUI: " + client.getChannelHistory(historicChannelName, user.getUserName()));
                     /* client.getLock().getServerResponseLock().lock();
                     try {
                         client.sendRequest(new GetChannelHistoryRequest(client.getUsername(), historicChannelName, Request.RequestType.GET_CHANNEL_HISTORY));

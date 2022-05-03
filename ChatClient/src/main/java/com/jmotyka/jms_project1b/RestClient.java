@@ -1,7 +1,6 @@
 package com.jmotyka.jms_project1b;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
@@ -9,9 +8,11 @@ import lombok.extern.java.Log;
 import javax.json.Json;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
 
 import java.util.ArrayList;
@@ -61,5 +62,19 @@ public class RestClient {
     }
 
     //// dalsze metody
+
+    public String getChannelHistory(String channelName, String userName){
+        WebTarget webTarget = client.target("http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/{channelName}/{userName}")
+                .resolveTemplate("channelName", channelName).resolveTemplate("userName", userName);
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response = invocationBuilder.get();
+        Json json = response.readEntity(Json.class);
+        System.out.println("RESPONSE: " + response);
+        System.out.println("RESPONSE CLASS: " + response.getClass());
+        System.out.println("RESPONSE ENTITY: " + response.getEntity());
+        System.out.println("JSON: " + json);
+        System.out.println("RESPONSE ENTITY CLASS: " + response.getEntity().getClass());
+        return "what's up";
+    }
 
 }

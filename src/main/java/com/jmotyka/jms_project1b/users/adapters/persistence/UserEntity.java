@@ -1,6 +1,5 @@
 package com.jmotyka.jms_project1b.users.adapters.persistence;
 
-
 import lombok.*;
 
 import javax.persistence.*;

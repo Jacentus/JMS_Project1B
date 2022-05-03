@@ -5,6 +5,8 @@ import com.jmotyka.jms_project1b.chat.ChatMessage;
 import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+
 import javax.naming.NamingException;
 import javax.ws.rs.client.*;
 

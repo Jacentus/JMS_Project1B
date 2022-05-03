@@ -71,7 +71,7 @@ public class ChatBox {
 
     private void sendMessage(String text) {
         try (JMSContext jmsContext = connectionFactory.createContext()) {
-            Message message = jmsContext.createObjectMessage(new ChatMessage(user.getUserName(), text));
+            Message message = jmsContext.createObjectMessage(new ChatMessage(user.getUserName(), channelName ,text));
             message.setStringProperty("channel", channelName);
             message.setStringProperty("sender", user.getUserName()); //TODO: identify senders
             jmsContext.createProducer().send(topic, message);

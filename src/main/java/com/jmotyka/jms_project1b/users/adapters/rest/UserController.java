@@ -47,5 +47,4 @@ public class UserController {
         return uriInfo.getAbsolutePathBuilder().path(id).build();
     }
 
-
 }

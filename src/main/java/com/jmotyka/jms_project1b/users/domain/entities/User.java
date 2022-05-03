@@ -16,11 +16,6 @@ public class User {
     private String userName;
     private Instant timestamp; // to mogłoby być jakieś wstrzykiwane metadane
 
-    /* @ValidateUser // czy tak?
-   public User(String userName) {
-        this.userName = userName;
-    }*/
-
     @Override
     public String toString() {
         return "User{" +
@@ -29,4 +24,5 @@ public class User {
                 ", timestamp=" + timestamp +
                 '}';
     }
+
 }

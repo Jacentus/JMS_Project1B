@@ -1,15 +1,13 @@
 package com.jmotyka.jms_project1b.chat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.chrono.ChronoLocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,7 +22,7 @@ public class ChatMessage implements Serializable {
 
     private String fileName;
 
-    private Instant timestamp = Instant.now();
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     public ChatMessage(String sender, String channelName, String text) {
         this.sender = sender;
@@ -47,7 +45,7 @@ public class ChatMessage implements Serializable {
 
     @Override
     public String toString() {
-        return "| " + sender + " | " + timestamp + " | " + text + '\'';
+        return "| " + sender + " | " + timestamp + " | " + text;
     }
 
 }

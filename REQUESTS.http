@@ -40,4 +40,4 @@ GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels
 
 ##### get history from channel, check if permitted to view;
 
-GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Testowy/Jacek
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Testowy/Marek
