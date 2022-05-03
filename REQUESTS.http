@@ -3,12 +3,12 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "userName": "Jacek"
+  "userName": "Marek"
 }
 
 #####
 
-GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/users/Jacek
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/users/Marek
 Content-Type: application/json
 Accept: application/json
 
@@ -19,7 +19,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "channelName": "Gdańsk"
+  "channelName": "Śmieszny"
 }
 
 ##### create a private channel indicating allowed users
@@ -31,6 +31,7 @@ Accept: application/json
 {
   "channelName": "Testowy",
   "isPrivate": true,
+  "password": "hasło",
   "permittedUsers": ["Jacek", "Marek", "Krzysiek"]
 }
 
@@ -40,4 +41,14 @@ GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels
 
 ##### get history from channel, check if permitted to view;
 
-GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Testowy/Marek
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Śmieszny/Mariolka
+
+##### check if channel is private
+
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/Testowy
+Content-Type: text/plain
+
+##### check if user is permitted to join private channel
+
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/Testowy/hasło/Maria
+Content-Type: text/plain

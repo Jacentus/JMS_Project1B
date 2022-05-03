@@ -18,6 +18,7 @@ public class ChannelEntity {
     @Id
     private String channelName;
     private boolean isPrivate;
+    private String password;
 
     @ElementCollection
     private Set<String> permittedUsers = new HashSet<>();

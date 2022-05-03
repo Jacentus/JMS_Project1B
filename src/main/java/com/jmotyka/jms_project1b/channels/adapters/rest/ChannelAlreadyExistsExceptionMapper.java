@@ -8,7 +8,6 @@ import javax.ws.rs.ext.ExceptionMapper;
 
 public class ChannelAlreadyExistsExceptionMapper implements ExceptionMapper<ChannelAlreadyExistsException> {
 
-
     @Override
     public Response toResponse(ChannelAlreadyExistsException e) {
         return Response.status(Response.Status.CONFLICT)
