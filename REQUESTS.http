@@ -41,11 +41,11 @@ GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels
 
 ##### get history from channel, check if permitted to view;
 
-GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Śmieszny/Mariolka
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Śmieszny/Obcy
 
 ##### check if channel is private
 
-GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/Testowy
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/Śmieszny
 Content-Type: text/plain
 
 ##### check if user is permitted to join private channel

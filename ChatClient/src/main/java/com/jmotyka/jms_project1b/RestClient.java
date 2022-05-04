@@ -7,6 +7,11 @@ import lombok.extern.java.Log;
 import com.jmotyka.jms_project1b.clientadapters.UserDTO;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+
 @Log
 public class RestClient {
 
@@ -15,15 +20,15 @@ public class RestClient {
     @Getter
     @Setter
     private UserDTO user;
-    private final String path = "http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/users";
-
+    private final String userPath = "http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/users";
+    private final String channelPath = "http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels";
     public RestClient(ResteasyClient client) {
         this.client = client;
     }
 
     //DZIAŁA
     public UserDTO getUserByName(String userName) {
-        UserDTO user = client.target(path)
+        UserDTO user = client.target(userPath)
                 .path("{userName}")
                 .resolveTemplate("userName", userName)
                 .request(/*MediaType.APPLICATION_JSON_TYPE*/)
@@ -32,13 +37,33 @@ public class RestClient {
         return user;
     }
 
-    //CREATE NEW USER
-/*    public UserDTO createNewUser(String username) {
+    //DZIAŁA
+    public UserDTO createNewUser(String username) {
         UserDTO user = new UserDTO(username);
+        Response response = client.target(userPath)
+                .request()
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON));
+        log.info("### Response: " + response.getStatus());
+        return response.readEntity(UserDTO.class);
 
-        ResteasyWebTarget target = client.target(path);
-        UserServicesClient userProxy = target.proxy(UserServicesClient.class);
-    }*/
+    }
+
+    //GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/Śmieszny
+    //Content-Type: text/plain
+    public boolean checkIfChannelIsPrivate(String channelName){
+        boolean isPrivate = client.target(channelPath)
+                .path("{channelName}")
+                .resolveTemplate("channelName", channelName)
+                .request(MediaType.TEXT_PLAIN)
+                .get(boolean.class);
+        System.out.println(isPrivate);
+        return isPrivate;
+    }
+
+
+
+
 
 }
 /*

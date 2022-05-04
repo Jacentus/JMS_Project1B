@@ -32,27 +32,22 @@ public class GUI {
         System.out.println("[3] create private channel [4] create public channel [5] download message history");
     }
 
-    public UserDTO askForUsername() { //TODO: CREATE/GET USER DETAILS FROM DATABASE VIA REST CLIENT
+    public UserDTO askForUsername() {
         System.out.println("Enter username: ");
         Scanner scanner = new Scanner(System.in);
         String username = scanner.nextLine();
         System.out.println("Checking if user already exists...");
         try {
             UserDTO user = client.getUserByName(username);
-            System.out.println("SUCCESS! USER: " + user);
+            System.out.println("User read from database. USER: " + user);
             this.setUser(user);
             return user;
         } catch (InternalServerErrorException exception) {
-            //TODO: create new user
-        }
-       // try{
-        //UserDTO user = client.getUserByName(username);
-        //return user;
-       // } catch (Exception e){
-           // UserDTO user = client.createNewUser(username);
-            //UserDTO user = new UserDTO(username); //TODO: IDENTIFY USERS BY ID
-
-        //}
+            UserDTO user = client.createNewUser(username);
+            System.out.println("New user has been created. USER: " + user);
+            this.setUser(user);
+            return user;
+        } //TODO: IDENTIFY USERS BY ID
     }
 
     public void chooseFromMenu()  {
@@ -106,6 +101,7 @@ public class GUI {
                     System.out.println("Type name of channel you wish to get history from: ");
                     String historicChannelName = scanner.nextLine();
                     //TODO: REST CLIENT REQUEST, PRINT CHANNEL HISTORY
+                    client.checkIfChannelIsPrivate(historicChannelName);
             }
             choice = null;
         }

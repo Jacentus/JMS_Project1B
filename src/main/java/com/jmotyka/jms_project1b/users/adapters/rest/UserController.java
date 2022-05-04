@@ -26,6 +26,7 @@ public class UserController {
     private UriInfo uriInfo;
 
     @POST
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(UserDTO userDTO){
         User user = usersService.createUser(userMapper.toDomain(userDTO).getUserName());
         System.out.println("USER z Restcontroller: " + user);
