@@ -2,7 +2,6 @@ package com.jmotyka.jms_project1b.clientadapters;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 import lombok.Getter;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,4 +36,5 @@ public class UserDTO implements Serializable {
         this.userName = userName;
         this.timestamp = timestamp;
     }
+
 }

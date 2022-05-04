@@ -19,7 +19,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "channelName": "Ciekły"
+  "channelName": "Krzywy"
 }
 
 ##### create a private channel indicating allowed users

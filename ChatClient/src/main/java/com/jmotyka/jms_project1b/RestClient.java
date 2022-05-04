@@ -1,5 +1,6 @@
 package com.jmotyka.jms_project1b;
 
+import com.jmotyka.jms_project1b.clientadapters.ChannelDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
@@ -51,7 +52,7 @@ public class RestClient {
     }
 
     //DZIAŁA
-    public boolean checkIfChannelIsPrivate(String channelName){
+    public boolean channelIsPrivate(String channelName){
         boolean isPrivate = client.target(channelPath)
                 .path("{channelName}")
                 .resolveTemplate("channelName", channelName)
@@ -75,49 +76,46 @@ public class RestClient {
         return response.readEntity(new GenericType<List<String>>() {});
     }
 
-
-
-
-}
-/*
-
-
-                        ("http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/users")
-                .path("{username}").resolveTemplate("username", username);
-        Response response = resource.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.json(username));
-        log.info("RESPONSE FROM SERVER: " + response);
-        UserDTO userDTO = response.readEntity(UserDTO.class);
-        //UserDTO userDTO = new Gson().fromJson(String.valueOf(response), UserDTO.class);
-        System.out.println("TO JEST MÓJ USERDTO OD SERWERA Z CREATE NEW USER: " + userDTO);
-        return userDTO;
-    }
-}
-
-
-
-    //// dalsze metody
-
-    public String getChannelHistory(String channelName, String userName){
-        WebTarget webTarget = client.target("http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/{channelName}/{userName}")
-                .resolveTemplate("channelName", channelName).resolveTemplate("userName", userName);
-        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
-        Response response = invocationBuilder.get();
-        Json json = response.readEntity(Json.class);
+    public List<String> getAllPublicChannels() {
+        Response response = client.target(channelPath)
+                .request()
+                .accept(MediaType.APPLICATION_JSON)
+                .get();
         System.out.println("RESPONSE: " + response);
-        System.out.println("RESPONSE CLASS: " + response.getClass());
-        System.out.println("RESPONSE ENTITY: " + response.getEntity());
-        System.out.println("JSON: " + json);
-        System.out.println("RESPONSE ENTITY CLASS: " + response.getEntity().getClass());
-        return "what's up";
+        return response.readEntity(new GenericType<List<String>>() {
+        });
     }
 
-    public List<String> getAllPublicChannels(){
-        WebTarget resource = client.target("http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels");
-        Response response = resource.request(MediaType.APPLICATION_JSON_TYPE).get();
-        List<String> listOfAllChannels = new Gson().fromJson(String.valueOf(response), ArrayList.class);
-        log.info("RESPONSE FROM SERVER: " + listOfAllChannels);
-        return listOfAllChannels;
+    public boolean userPermittedToJoinPrivateChannel(String channelName, String password, String userName){
+        boolean isPermitted = client.target(channelPath)
+                .path("{channelName}")
+                .path("{password}")
+                .path("{userName}")
+                .resolveTemplate("channelName", channelName)
+                .resolveTemplate("password", password)
+                .resolveTemplate("userName", userName)
+                .request(MediaType.TEXT_PLAIN)
+                .get(boolean.class);
+        System.out.println(isPermitted);
+        return isPermitted;
     }
 
+    public int createPublicChannel(ChannelDTO channelDTO) {
+        Response response = client.target(channelPath + "/publicChannel")
+                .request()
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(channelDTO, MediaType.APPLICATION_JSON));
+        log.info("### Response: " + response.getStatus());
+        return response.getStatus();
+    }
 
-*/
+    public int createPrivateChannel(ChannelDTO channelDTO) {
+        Response response = client.target(channelPath + "/privateChannel")
+                .request()
+                .accept(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(channelDTO, MediaType.APPLICATION_JSON));
+        log.info("### Response: " + response.getStatus());
+        return response.getStatus();
+    }
+
+}

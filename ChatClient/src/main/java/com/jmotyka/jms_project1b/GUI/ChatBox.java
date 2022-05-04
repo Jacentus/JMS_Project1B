@@ -95,6 +95,6 @@ public class ChatBox {
             logger.log(Level.SEVERE, "ERROR WHILE SENDING FILE");
         }
         logger.log(Level.INFO, "File send");
-
     }
+
 }

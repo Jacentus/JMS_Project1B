@@ -2,7 +2,7 @@ package com.jmotyka.jms_project1b.GUI;
 
 import com.jmotyka.jms_project1b.FileConverter;
 import com.jmotyka.jms_project1b.RestClient;
-import com.jmotyka.jms_project1b.channels.adapters.rest.ChannelDTO;
+import com.jmotyka.jms_project1b.clientadapters.ChannelDTO;
 import com.jmotyka.jms_project1b.clientadapters.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,12 +40,12 @@ public class GUI {
         System.out.println("Checking if user already exists...");
         try {
             UserDTO user = client.getUserByName(username);
-            System.out.println("User read from database. USER: " + user);
+            System.out.println("User read from database. Welcome back, " + user.getUserName());
             this.setUser(user);
             return user;
         } catch (InternalServerErrorException exception) {
             UserDTO user = client.createNewUser(username);
-            System.out.println("New user has been created. USER: " + user);
+            System.out.println("New user has been created. Nice to meet you, " + user.getUserName());
             this.setUser(user);
             return user;
         } //TODO: IDENTIFY USERS BY ID
@@ -60,16 +60,29 @@ public class GUI {
             choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                   // client.getAllPublicChannels();
-                    //TODO: IMPLEMENT REST CLIENT REQUEST, PRINT PUBLIC CHANNELS
+                    List<String> publicChannels = client.getAllPublicChannels();
+                    for (String channelName : publicChannels) {
+                        System.out.println(channelName);
+                    }
+                    //TODO: obsługa błędów
                     break;
                 case "2":
-                    System.out.println("Type channel name: ");
+                    System.out.println("Type channel name: "); // TODO: OBSŁUGA BŁĘDU GDY BRAK KANAŁU
                     String channelName = scanner.nextLine();
-
-                    ChatBox publicChatBox = new ChatBox(scanner, fileConverter, channelName, user);
-                    //TODO: CHECK IF PUBLIC, IF SO, ALLOW, OTHERWISE ASK FOR PASSWORD
-                    publicChatBox.launchChatBox();
+                    if(!client.channelIsPrivate(channelName)) {
+                        ChatBox publicChatBox = new ChatBox(scanner, fileConverter, channelName, user);
+                        publicChatBox.launchChatBox();
+                    } else {
+                        System.out.println("Type password: ");
+                        String password = scanner.nextLine();
+                        if(client.userPermittedToJoinPrivateChannel(channelName, password, user.getUserName())){
+                            ChatBox publicChatBox = new ChatBox(scanner, fileConverter, channelName, user);
+                            publicChatBox.launchChatBox();
+                        } else {
+                            System.out.println("You are not permitted to join that channel or it does not exist");
+                        }
+                        //TODO: OBSŁUGA BŁĘDÓW
+                    }
                     break;
                 case "3":
                     System.out.println("Type channel name: ");
@@ -90,13 +103,20 @@ public class GUI {
                     String password = null;
                     password = scanner.nextLine();
                     ChannelDTO privateChannelDTO = new ChannelDTO(newPrivateChannelName, true, password, permittedUsers);
-                    //TODO: SEND REQUEST, CREATE CHANNEL IF DOES NOT EXIST, OTHERWISE THROW EXCEPTION AND BREAK
+                    int responsePrivate = client.createPrivateChannel(privateChannelDTO);
+                    if(responsePrivate==201) {
+                        System.out.println("A private channel has been successfully created!  You can join it now!");
+                    } else System.out.println("Sth went wrong! Try again");
+                    //TODO: OBSŁUGA BŁĘDÓW
                     break;
                 case "4":
                     System.out.println("Type channel name: ");
                     String publicChannelName = scanner.nextLine();
                     ChannelDTO publicChannelDTO = new ChannelDTO(publicChannelName, false);
-                    // TODO: SEND REQUEST, CREATE CHANNEL IF DOES NOT EXIST, OTHERWISE THROW EXCEPTION AND BREAK
+                    int response = client.createPublicChannel(publicChannelDTO);
+                    if(response==201) {
+                        System.out.println("A public channel has been successfully created! You can join it now!");
+                    } else System.out.println("Sth went wrong! Try again");
                     break;
                 case "5": // działa. TODO: ZROBIĆ OBSŁUGĘ BŁĘDÓW
                     System.out.println("Type name of channel you wish to get history from: ");
@@ -108,6 +128,7 @@ public class GUI {
             }
             choice = null;
         }
+
     }
 
 }
