@@ -19,7 +19,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "channelName": "Śmieszny"
+  "channelName": "Ciekły"
 }
 
 ##### create a private channel indicating allowed users
@@ -41,7 +41,8 @@ GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels
 
 ##### get history from channel, check if permitted to view;
 
-GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Śmieszny/Obcy
+GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/history/Śmieszny/Mireczek
+Content-Type: application/json
 
 ##### check if channel is private
 

@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.ws.rs.InternalServerErrorException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class GUI {
@@ -97,11 +98,13 @@ public class GUI {
                     ChannelDTO publicChannelDTO = new ChannelDTO(publicChannelName, false);
                     // TODO: SEND REQUEST, CREATE CHANNEL IF DOES NOT EXIST, OTHERWISE THROW EXCEPTION AND BREAK
                     break;
-                case "5":
+                case "5": // działa. TODO: ZROBIĆ OBSŁUGĘ BŁĘDÓW
                     System.out.println("Type name of channel you wish to get history from: ");
                     String historicChannelName = scanner.nextLine();
-                    //TODO: REST CLIENT REQUEST, PRINT CHANNEL HISTORY
-                    client.checkIfChannelIsPrivate(historicChannelName);
+                    List<String> history = client.getChannelHistory(historicChannelName, user.getUserName());
+                    for (String message: history) {
+                        System.out.println(message);
+                    }
             }
             choice = null;
         }

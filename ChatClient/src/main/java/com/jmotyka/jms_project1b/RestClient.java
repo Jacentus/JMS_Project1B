@@ -8,6 +8,7 @@ import com.jmotyka.jms_project1b.clientadapters.UserDTO;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -26,7 +27,7 @@ public class RestClient {
         this.client = client;
     }
 
-    //DZIAŁA
+    //DZIAŁA  TODO: ZROBIĆ OBSŁUGĘ BŁĘDÓW
     public UserDTO getUserByName(String userName) {
         UserDTO user = client.target(userPath)
                 .path("{userName}")
@@ -37,7 +38,7 @@ public class RestClient {
         return user;
     }
 
-    //DZIAŁA
+    //DZIAŁA TODO: ZROBIĆ OBSŁUGĘ BŁĘDÓW
     public UserDTO createNewUser(String username) {
         UserDTO user = new UserDTO(username);
         Response response = client.target(userPath)
@@ -49,8 +50,7 @@ public class RestClient {
 
     }
 
-    //GET http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/channels/Śmieszny
-    //Content-Type: text/plain
+    //DZIAŁA
     public boolean checkIfChannelIsPrivate(String channelName){
         boolean isPrivate = client.target(channelPath)
                 .path("{channelName}")
@@ -61,6 +61,19 @@ public class RestClient {
         return isPrivate;
     }
 
+    // DZIAŁA TODO: ZROBIĆ OBSŁUGĘ BŁĘDÓW
+    public List<String> getChannelHistory(String channelName, String username) {
+        Response response = client.target(channelPath+"/history")
+                .path("{channelName}")
+                .path("{userName}")
+                .resolveTemplate("channelName", channelName)
+                .resolveTemplate("userName", username)
+                .request(/*MediaType.APPLICATION_JSON*/)
+                .accept(MediaType.APPLICATION_JSON)
+                .get();
+        System.out.println("RESPONSE: " + response);
+        return response.readEntity(new GenericType<List<String>>() {});
+    }
 
 
 
