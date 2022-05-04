@@ -31,4 +31,5 @@ public class ChannelDTO implements Serializable {
         this.channelName = channelName;
         this.isPrivate = isPrivate;
     }
+
 }

@@ -11,13 +11,13 @@ import java.util.Optional;
 
 @Singleton
 @RequiredArgsConstructor
-public class JpaUsersRepository { // to do poprawki wszystko po zajęciach z hibernate'a
+public class JpaUsersRepository {
 
     @Setter
     @PersistenceContext(unitName = "projectBdb")
     private EntityManager entityManager;
 
-    @Transactional // dodałem
+    @Transactional
     public UserEntity save(UserEntity userEntity){
         System.out.println("USER ENTITY Z REPOSITORY: " + userEntity);
         entityManager.persist(userEntity);

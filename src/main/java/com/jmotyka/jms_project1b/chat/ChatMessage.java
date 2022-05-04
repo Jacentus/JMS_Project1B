@@ -43,6 +43,13 @@ public class ChatMessage implements Serializable {
         this.fileName = fileName;
     }
 
+    public ChatMessage(String sender, String text, byte[] file, String fileName) {
+        this.sender = sender;
+        this.text = text;
+        this.file = file;
+        this.fileName = fileName;
+    }
+
     @Override
     public String toString() {
         return "| " + sender + " | " + timestamp + " | " + text;

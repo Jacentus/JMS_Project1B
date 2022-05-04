@@ -21,8 +21,8 @@ public class JmsListener implements MessageListener {
     private UserDTO user;
     private JMSContext jmsContext;
     private JMSConsumer consumer;
-    @Setter
-    private volatile boolean exit = false;
+    //@Setter
+    //private volatile boolean exit = false;
 
     public JmsListener(String channelName, UserDTO user, Topic topic, ConnectionFactory connectionFactory) {
         this.channelName = channelName;
@@ -34,10 +34,10 @@ public class JmsListener implements MessageListener {
         this.consumer = jmsContext.createConsumer(topic, "channel = '" + channelName + "'");
     }
 
-    public void listen() throws ExitListenerException {
+    public void listen() {
             try {
                 consumer.setMessageListener(this);
-            } catch (/*ExitListenerException*/ Exception e){ //TODO: OBSŁUGA BŁĘDÓW
+            } catch (Exception e){ //TODO: OBSŁUGA BŁĘDÓW
                 System.out.println("CLOSING MESSAGE LISTENER");
                 e.printStackTrace();
             }
@@ -45,12 +45,11 @@ public class JmsListener implements MessageListener {
 
     @Override
     public void onMessage(Message message) {
-        log.info("***** MESSAGE RECEIVED ***** ");
+        //log.info("***** MESSAGE RECEIVED ***** ");
         try {
-            if(!Objects.equals(message.getStringProperty("sender"), user.getUserName())) {
+            if (!Objects.equals(message.getStringProperty("sender"), user.getUserName())) {
                 System.out.println(message.getBody(ChatMessage.class));
-            }
-            if(message.getBody(ChatMessage.class).getFile() != null){
+                if (message.getBody(ChatMessage.class).getFile() != null) {
                 String filePath = "D:\\RECEIVED_FILES\\" + message.getBody(ChatMessage.class).getFileName();
                 File file = new File(filePath);
                 try {
@@ -62,6 +61,7 @@ public class JmsListener implements MessageListener {
                     e.printStackTrace();
                 }
             }
+        }
         } catch (JMSException e) {
             e.printStackTrace();
         }

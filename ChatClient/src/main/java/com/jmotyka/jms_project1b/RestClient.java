@@ -12,6 +12,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log
@@ -33,9 +34,8 @@ public class RestClient {
         UserDTO user = client.target(userPath)
                 .path("{userName}")
                 .resolveTemplate("userName", userName)
-                .request(/*MediaType.APPLICATION_JSON_TYPE*/)
+                .request()
                 .get(UserDTO.class);
-        System.out.println("dane z usera: " + user.getUserName() + ", " + user.getId());
         return user;
     }
 
@@ -46,7 +46,6 @@ public class RestClient {
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(user, MediaType.APPLICATION_JSON));
-        log.info("### Response: " + response.getStatus());
         return response.readEntity(UserDTO.class);
 
     }
@@ -58,7 +57,6 @@ public class RestClient {
                 .resolveTemplate("channelName", channelName)
                 .request(MediaType.TEXT_PLAIN)
                 .get(boolean.class);
-        System.out.println(isPrivate);
         return isPrivate;
     }
 
@@ -72,16 +70,17 @@ public class RestClient {
                 .request(/*MediaType.APPLICATION_JSON*/)
                 .accept(MediaType.APPLICATION_JSON)
                 .get();
-        System.out.println("RESPONSE: " + response);
-        return response.readEntity(new GenericType<List<String>>() {});
-    }
+        if(response.getStatus()==200) {
+            return response.readEntity(new GenericType<List<String>>() {
+            });
+        } else return new ArrayList<String>();
+        }
 
     public List<String> getAllPublicChannels() {
         Response response = client.target(channelPath)
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
                 .get();
-        System.out.println("RESPONSE: " + response);
         return response.readEntity(new GenericType<List<String>>() {
         });
     }
@@ -96,7 +95,6 @@ public class RestClient {
                 .resolveTemplate("userName", userName)
                 .request(MediaType.TEXT_PLAIN)
                 .get(boolean.class);
-        System.out.println(isPermitted);
         return isPermitted;
     }
 
@@ -105,7 +103,6 @@ public class RestClient {
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(channelDTO, MediaType.APPLICATION_JSON));
-        log.info("### Response: " + response.getStatus());
         return response.getStatus();
     }
 
@@ -114,7 +111,6 @@ public class RestClient {
                 .request()
                 .accept(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(channelDTO, MediaType.APPLICATION_JSON));
-        log.info("### Response: " + response.getStatus());
         return response.getStatus();
     }
 

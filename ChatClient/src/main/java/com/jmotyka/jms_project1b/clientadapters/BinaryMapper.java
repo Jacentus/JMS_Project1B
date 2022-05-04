@@ -19,7 +19,6 @@ public class BinaryMapper implements MessageBodyReader<Object>, MessageBodyWrite
 
     public static final String MEDIA_TYPE = "application/binary-data";
 
-
     @Override
     public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         return mediaType.toString().equalsIgnoreCase(MEDIA_TYPE);

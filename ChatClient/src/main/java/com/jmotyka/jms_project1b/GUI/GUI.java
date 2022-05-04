@@ -118,17 +118,17 @@ public class GUI {
                         System.out.println("A public channel has been successfully created! You can join it now!");
                     } else System.out.println("Sth went wrong! Try again");
                     break;
-                case "5": // działa. TODO: ZROBIĆ OBSŁUGĘ BŁĘDÓW
+                case "5":
                     System.out.println("Type name of channel you wish to get history from: ");
                     String historicChannelName = scanner.nextLine();
                     List<String> history = client.getChannelHistory(historicChannelName, user.getUserName());
+                    if(!history.isEmpty())
                     for (String message: history) {
                         System.out.println(message);
-                    }
+                    } else System.out.println("History is empty or you are not allowed to see it.");
             }
             choice = null;
         }
-
     }
 
 }

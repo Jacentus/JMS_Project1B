@@ -11,4 +11,5 @@ public class DefaultChannelFactory implements ChannelFactory {
     public ChannelService channelService(IdGenerator idGenerator, ChannelRepository channelRepository) {
         return new ChannelProcessor(idGenerator, channelRepository);
     }
+
 }

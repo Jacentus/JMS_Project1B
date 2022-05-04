@@ -59,5 +59,4 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
         return channelRepository.checkIfPermittedToJoinPrivateChannel(channelName, password, username);
     }
 
-
 }

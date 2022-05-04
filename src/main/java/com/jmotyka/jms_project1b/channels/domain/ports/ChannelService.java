@@ -3,7 +3,6 @@ package com.jmotyka.jms_project1b.channels.domain.ports;
 import com.jmotyka.jms_project1b.channels.adapters.persistence.NotAllowedToGetHistoryException;
 import com.jmotyka.jms_project1b.channels.domain.entities.Channel;
 
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 

@@ -17,7 +17,6 @@ import java.net.URI;
 @Setter
 public class UserController {
 
-    //@Proxy
     @Inject
     private UsersService usersService;
     @Inject

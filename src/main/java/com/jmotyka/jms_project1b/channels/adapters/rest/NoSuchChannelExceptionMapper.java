@@ -11,7 +11,7 @@ public class NoSuchChannelExceptionMapper implements ExceptionMapper<NoSuchChann
     @Override
     public Response toResponse(NoSuchChannelException e) {
         return Response.status(Response.Status.NOT_FOUND)
-                .entity(new ExceptionDto("No such channel"))
+                .entity(new ExceptionDto("Such channel does not exist!"))
                 .build();
     }
 

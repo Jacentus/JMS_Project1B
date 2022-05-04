@@ -24,9 +24,7 @@ public class ChatBox {
     private final String channelName;
     private UserDTO user;
     private ProxyFactory proxyFactory;
-
     private ConnectionFactory connectionFactory;
-
     private Topic topic;
 
     public ChatBox(Scanner scanner, FileConverter fileConverter, String channelName, UserDTO user) {
@@ -53,7 +51,6 @@ public class ChatBox {
             text = scanner.nextLine();
             if (text.equalsIgnoreCase("#EXIT")) {
                 System.out.println("Exiting chatroom...");
-                messageListener.setExit(true);  //TODO: NOT WORKING
                 messageListener.getConsumer().close();
                 break;
             }
@@ -79,22 +76,20 @@ public class ChatBox {
             e.printStackTrace();
             logger.log(Level.SEVERE, "ERROR WHILE SENDING TEXT MESSAGE");
         }
-        logger.log(Level.INFO, "Message successfully send");
     }
 
     private void sendFile(File file) {
         byte[] bytes = fileConverter.transformIntoBytes(file);
         String fileName = file.getName();
         try (JMSContext jmsContext = connectionFactory.createContext()) {
-            Message message = jmsContext.createObjectMessage(new ChatMessage(bytes, fileName));
+            Message message = jmsContext.createObjectMessage(new ChatMessage(user.getUserName(), "SEND YOU A FILE", bytes, fileName));
             message.setStringProperty("channel", channelName);
-            message.setStringProperty("sender", user.getUserName());// TODO: identify senders
+            message.setStringProperty("sender", user.getUserName());
             jmsContext.createProducer().send(topic, message);
         } catch (JMSException e) {
             e.printStackTrace();
             logger.log(Level.SEVERE, "ERROR WHILE SENDING FILE");
         }
-        logger.log(Level.INFO, "File send");
     }
 
 }

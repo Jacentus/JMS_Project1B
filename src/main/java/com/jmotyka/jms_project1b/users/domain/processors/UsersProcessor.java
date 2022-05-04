@@ -23,8 +23,7 @@ public class UsersProcessor implements UsersService {
                 .userName(userName)
                 .timestamp(timeProvider.getTimestamp())
                 .build();
-        System.out.println("USER FROM USER SERVICE: " + user);
-        return usersRepository.save(user); //validate User!!
+        return usersRepository.save(user);
     }
 
     @Override

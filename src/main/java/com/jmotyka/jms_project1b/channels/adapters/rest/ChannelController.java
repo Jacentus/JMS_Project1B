@@ -1,20 +1,17 @@
 package com.jmotyka.jms_project1b.channels.adapters.rest;
 
-
 import com.jmotyka.jms_project1b.channels.adapters.persistence.NotAllowedToGetHistoryException;
 import com.jmotyka.jms_project1b.channels.domain.entities.Channel;
 import com.jmotyka.jms_project1b.channels.domain.ports.ChannelService;
 import lombok.Setter;
 
 import javax.inject.Inject;
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.List;
 
 @Path("channels")
 @Setter
@@ -24,7 +21,7 @@ public class ChannelController {
     private ChannelService channelService;
 
     @Inject
-    private RestChannelMapper channelMapper;
+    private RestChannelMapper channelMapper; //TODO: NIE DZIAŁA MAPPER
 
     @Context
     private UriInfo uriInfo;

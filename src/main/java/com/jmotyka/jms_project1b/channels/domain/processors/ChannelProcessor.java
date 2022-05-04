@@ -62,4 +62,5 @@ public class ChannelProcessor implements ChannelService {
     public boolean checkIfPermittedToJoinPrivateChannel(String channelName, String password, String username) {
         return channelRepository.checkIfPermittedToJoinPrivateChannel(channelName, password, username);
     }
+
 }
