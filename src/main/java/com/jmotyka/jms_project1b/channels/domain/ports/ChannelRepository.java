@@ -20,4 +20,8 @@ public interface ChannelRepository {
 
     void addUserToPermittedUsers(String channelName, String sender);
 
+    boolean checkIfChannelIsPrivate(String channelName);
+
+    boolean checkIfPermittedToJoinPrivateChannel(String channelName, String password, String username);
+
 }

@@ -1,14 +1,12 @@
 package com.jmotyka.jms_project1b;
 
 import com.jmotyka.jms_project1b.GUI.GUI;
-import com.jmotyka.jms_project1b.chat.ChatMessage;
-import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
-import lombok.Getter;
-import lombok.SneakyThrows;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import com.jmotyka.jms_project1b.clientadapters.BinaryMapper;
+import com.jmotyka.jms_project1b.clientadapters.UserDTO;
 
+import lombok.SneakyThrows;
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 import javax.naming.NamingException;
-import javax.ws.rs.client.*;
 
 public class ClientApplication {
 
@@ -17,16 +15,14 @@ public class ClientApplication {
     @SneakyThrows
     public static void main(String[] args) throws NamingException {
 
-        Client client = ClientBuilder.newClient();
-        RestClient restClient = new RestClient(client);
-        GUI gui = new GUI(restClient);
-
+        var restClient = new ResteasyClientBuilderImpl()
+                .register(BinaryMapper.class)
+                .build();
+        RestClient myClient = new RestClient(restClient);
+        GUI gui = new GUI(myClient);
         UserDTO user  = gui.askForUsername();
-
         gui.chooseFromMenu();
-
-        restClient.getClient().close();
-
+        myClient.getClient().close();
     }
 
 }

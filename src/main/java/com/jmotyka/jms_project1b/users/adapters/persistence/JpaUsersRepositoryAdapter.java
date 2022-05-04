@@ -20,7 +20,6 @@ public class JpaUsersRepositoryAdapter implements UsersRepository {
     @Override
     public User save(User user) {
         UserEntity entity = userMapper.toEntity(user);
-        System.out.println("USER ENTITY Z JPA ADAPTERA: " + entity);
         UserEntity savedEntity = usersRepository.save(entity);
         return userMapper.toDomain(savedEntity);
     }

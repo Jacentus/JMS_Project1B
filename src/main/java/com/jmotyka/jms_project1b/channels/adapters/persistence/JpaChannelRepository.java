@@ -7,8 +7,8 @@ import lombok.extern.java.Log;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Singleton
@@ -53,7 +53,7 @@ public class JpaChannelRepository {
         Optional<ChannelEntity> channelEntity = Optional.ofNullable(getChannelByName(channelName).orElseThrow(NoSuchChannelException::new));
         channelEntity.get().getChannelHistory().add(text);
         save(channelEntity.get());
-        log.info("message added to channel history");
+        log.info("MESSAGED SAVED IN CHANNEL HISTORY");
     }
 
     public void addUserToPermittedUsers(String channelName, String sender) {
@@ -63,6 +63,18 @@ public class JpaChannelRepository {
             save(channelEntity.get());
             log.info("USER ADDED TO PERMITTED USERS LIST");
         }
+    }
+
+    public boolean checkIfChannelIsPrivate(String channelName) {
+        Optional<ChannelEntity> channelEntity = Optional.ofNullable(getChannelByName(channelName).orElseThrow(NoSuchChannelException::new));
+        if (channelEntity.get().isPrivate()){
+            return true;
+        } else return false;
+    }
+
+    public boolean checkIfPermittedToJoinPrivateChannel(String channelName, String password, String username){
+        Optional<ChannelEntity> channelEntity = Optional.ofNullable(getChannelByName(channelName).orElseThrow(NoSuchChannelException::new));
+        return channelEntity.get().getPermittedUsers().contains(username) && Objects.equals(channelEntity.get().getPassword(), password);
     }
 
 }

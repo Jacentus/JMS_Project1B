@@ -1,31 +1,30 @@
-package com.jmotyka.jms_project1b.channels.adapters.rest;
+package com.jmotyka.jms_project1b.clientadapters;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import java.util.LinkedList;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.List;
 
-@Data
+@XmlRootElement(name = "channel")
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
-@NoArgsConstructor
-public class ChannelDTO {
+public class ChannelDTO implements Serializable {
 
-    private String id;
-    @NotNull
     private String channelName;
     private Boolean isPrivate;
     private String password;
     private List<String> permittedUsers;
-    private LinkedList<String> channelHistory;
 
     public ChannelDTO(String channelName, Boolean isPrivate, String password, List<String> permittedUsers) {
         this.channelName = channelName;
         this.isPrivate = isPrivate;
         this.password = password;
         this.permittedUsers = permittedUsers;
+    }
+
+    public ChannelDTO() {
     }
 
     public ChannelDTO(String channelName, Boolean isPrivate) {

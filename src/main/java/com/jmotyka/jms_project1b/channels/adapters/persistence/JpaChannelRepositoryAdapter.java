@@ -48,4 +48,15 @@ public class JpaChannelRepositoryAdapter implements ChannelRepository {
     public void addUserToPermittedUsers(String channelName, String sender) {
         channelRepository.addUserToPermittedUsers(channelName, sender);
     }
+
+    @Override
+    public boolean checkIfChannelIsPrivate(String channelName) {
+        return channelRepository.checkIfChannelIsPrivate(channelName);
+    }
+
+    @Override
+    public boolean checkIfPermittedToJoinPrivateChannel(String channelName, String password, String username) {
+        return channelRepository.checkIfPermittedToJoinPrivateChannel(channelName, password, username);
+    }
+
 }

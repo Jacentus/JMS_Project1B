@@ -2,12 +2,14 @@ package com.jmotyka.jms_project1b.GUI;
 
 import com.jmotyka.jms_project1b.FileConverter;
 import com.jmotyka.jms_project1b.RestClient;
-import com.jmotyka.jms_project1b.commons.ExceptionDto;
-import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
-import com.jmotyka.jms_project1b.users.domain.processors.NoSuchUserException;
+import com.jmotyka.jms_project1b.clientadapters.ChannelDTO;
+import com.jmotyka.jms_project1b.clientadapters.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.ws.rs.InternalServerErrorException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class GUI {
@@ -28,25 +30,28 @@ public class GUI {
     public void printMenu() {
         System.out.println("***** CHAT APP *****");
         System.out.println("[1] show open channels [2] join channel");
-        System.out.println("[3] create private channel [4] join private channel [5] download message history");
+        System.out.println("[3] create private channel [4] create public channel [5] download message history");
     }
 
-    public UserDTO askForUsername() { //TODO: CREATE/GET USER DETAILS FROM DATABASE
+    public UserDTO askForUsername() {
         System.out.println("Enter username: ");
         Scanner scanner = new Scanner(System.in);
         String username = scanner.nextLine();
-       // try{
-        //UserDTO user = client.getUserByName(username);
-        //return user;
-       // } catch (Exception e){
-           // UserDTO user = client.createNewUser(username);
-            UserDTO user = new UserDTO(username); //TODO: IDENTIFY USERS BY ID
+        System.out.println("Checking if user already exists...");
+        try {
+            UserDTO user = client.getUserByName(username);
+            System.out.println("User read from database. Welcome back, " + user.getUserName());
             this.setUser(user);
             return user;
-        //}
+        } catch (InternalServerErrorException exception) {
+            UserDTO user = client.createNewUser(username);
+            System.out.println("New user has been created. Nice to meet you, " + user.getUserName());
+            this.setUser(user);
+            return user;
+        } //TODO: IDENTIFY USERS BY ID
     }
 
-    public void chooseFromMenu() throws InterruptedException {
+    public void chooseFromMenu()  {
         while (true) {
             printMenu();
             String choice;
@@ -55,40 +60,38 @@ public class GUI {
             choice = scanner.nextLine();
             switch (choice) {
                 case "1":
-                    client.getAllPublicChannels(); //TODO: IMPLEMENT REST CLIENT REQUEST
-        /*            client.getLock().getServerResponseLock().lock();
-                    try {
-                        client.sendRequest(new GetAllChannelsRequest(client.getUsername(), Request.RequestType.GET_ALL_CHANNELS));
-                        client.getLock().getResponseHandled().await();
-                    } finally {
-                        client.getLock().getServerResponseLock().unlock();
-                    }*/
+                    List<String> publicChannels = client.getAllPublicChannels();
+                    for (String channelName : publicChannels) {
+                        System.out.println(channelName);
+                    }
+                    //TODO: obsługa błędów
                     break;
                 case "2":
-                    System.out.println("Type channel name: ");
+                    System.out.println("Type channel name: "); // TODO: OBSŁUGA BŁĘDU GDY BRAK KANAŁU
                     String channelName = scanner.nextLine();
-
-                    //TODO: ADD USER TO PERMITTED USERS OF PUBLIC CHANNEL;
-
-                    //client.getLock().getServerResponseLock().lock();
-                    try {
-                        //client.sendRequest(new JoinPublicChannelRequest(client.getUsername(), Request.RequestType.JOIN_PUBLIC_CHANNEL, channelName));
-                        //client.getLock().getResponseHandled().await();
-                    } finally {
-                        //client.getLock().getServerResponseLock().unlock();
+                    if(!client.channelIsPrivate(channelName)) {
+                        ChatBox publicChatBox = new ChatBox(scanner, fileConverter, channelName, user);
+                        publicChatBox.launchChatBox();
+                    } else {
+                        System.out.println("Type password: ");
+                        String password = scanner.nextLine();
+                        if(client.userPermittedToJoinPrivateChannel(channelName, password, user.getUserName())){
+                            ChatBox publicChatBox = new ChatBox(scanner, fileConverter, channelName, user);
+                            publicChatBox.launchChatBox();
+                        } else {
+                            System.out.println("You are not permitted to join that channel or it does not exist");
+                        }
+                        //TODO: OBSŁUGA BŁĘDÓW
                     }
-                    ChatBox publicChatBox = new ChatBox(scanner, fileConverter, channelName, user);
-                    publicChatBox.launchChatBox();
-                    //client.sendRequest(new RemoveFromChannelRequest(client.getUsername(), Request.RequestType.REMOVE_FROM_CHANNEL, channelName));*/
                     break;
                 case "3":
                     System.out.println("Type channel name: ");
-                   // String newPrivateChannelName = scanner.nextLine();
+                    String newPrivateChannelName = scanner.nextLine();
                     System.out.println("Provide list of users you want to chat with, one by one.");
                     System.out.println("Type #DONE when finished: ");
                     String permittedUser = null;
-                  /*  ArrayList<String> permittedUsers = new ArrayList<>();
-                    permittedUsers.add(client.getUsername());
+                    ArrayList<String> permittedUsers = new ArrayList<>();
+                    permittedUsers.add(user.getUserName());
                     while (true) {
                         permittedUser = scanner.nextLine();
                         if (permittedUser.equalsIgnoreCase("#DONE")) {
@@ -96,47 +99,33 @@ public class GUI {
                         }
                         permittedUsers.add(permittedUser);
                     }
-                    client.getLock().getServerResponseLock().lock();
-                    try {
-                        client.sendRequest(new CreatePrivateChannelRequest(client.getUsername(), newPrivateChannelName, Request.RequestType.CREATE_NEW_PRIVATE_CHANNEL, true, permittedUsers));
-                        client.getLock().getResponseHandled().await();
-                    } finally {
-                        client.getLock().getServerResponseLock().unlock();
-                    }
-                    if (client.getIsPermittedToChat()) {
-                        ChatBox creatorChatBox = new ChatBox(scanner, fileConverter, client, newPrivateChannelName);
-                        creatorChatBox.launchChatBox();
-                        client.sendRequest(new RemoveFromChannelRequest(client.getUsername(), Request.RequestType.REMOVE_FROM_CHANNEL, newPrivateChannelName));
-                    }*/
+                    System.out.println("Type password needed to access private channel:");
+                    String password = null;
+                    password = scanner.nextLine();
+                    ChannelDTO privateChannelDTO = new ChannelDTO(newPrivateChannelName, true, password, permittedUsers);
+                    int responsePrivate = client.createPrivateChannel(privateChannelDTO);
+                    if(responsePrivate==201) {
+                        System.out.println("A private channel has been successfully created!  You can join it now!");
+                    } else System.out.println("Sth went wrong! Try again");
+                    //TODO: OBSŁUGA BŁĘDÓW
                     break;
                 case "4":
-                    System.out.println("Type channel name you want to join: ");
-        /*            String privateChannelName = scanner.nextLine();
-                    client.getLock().getServerResponseLock().lock();
-                    try {
-                        client.sendRequest(new JoinPrivateChannelRequest(client.getUsername(), Request.RequestType.JOIN_PRIVATE_CHANNEL, privateChannelName));
-                        client.getLock().getResponseHandled().await();
-                    } finally {
-                        client.getLock().getServerResponseLock().unlock();
-                    }
-                    if (client.getIsPermittedToChat()) {
-                        ChatBox joinerChatBox = new ChatBox(scanner, fileConverter, client, privateChannelName);
-                        joinerChatBox.launchChatBox();
-                        client.sendRequest(new RemoveFromChannelRequest(client.getUsername(), Request.RequestType.REMOVE_FROM_CHANNEL, privateChannelName));
-                    }*/
+                    System.out.println("Type channel name: ");
+                    String publicChannelName = scanner.nextLine();
+                    ChannelDTO publicChannelDTO = new ChannelDTO(publicChannelName, false);
+                    int response = client.createPublicChannel(publicChannelDTO);
+                    if(response==201) {
+                        System.out.println("A public channel has been successfully created! You can join it now!");
+                    } else System.out.println("Sth went wrong! Try again");
                     break;
                 case "5":
                     System.out.println("Type name of channel you wish to get history from: ");
                     String historicChannelName = scanner.nextLine();
-                    //TODO: REST CLIENT REQUEST
-                    System.out.println("HISTORIA Z GUI: " + client.getChannelHistory(historicChannelName, user.getUserName()));
-                    /* client.getLock().getServerResponseLock().lock();
-                    try {
-                        client.sendRequest(new GetChannelHistoryRequest(client.getUsername(), historicChannelName, Request.RequestType.GET_CHANNEL_HISTORY));
-                        client.getLock().getResponseHandled().await();
-                    } finally {
-                        client.getLock().getServerResponseLock().unlock();
-                    }*/
+                    List<String> history = client.getChannelHistory(historicChannelName, user.getUserName());
+                    if(!history.isEmpty())
+                    for (String message: history) {
+                        System.out.println(message);
+                    } else System.out.println("History is empty or you are not allowed to see it.");
             }
             choice = null;
         }

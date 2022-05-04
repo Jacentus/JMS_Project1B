@@ -17,11 +17,12 @@ public class ChannelProcessor implements ChannelService {
     private final ChannelRepository channelRepository;
 
     @Override
-    public Channel createChannel(String channelName, Boolean isPrivate, List<String> permittedUsers) {
+    public Channel createChannel(String channelName, Boolean isPrivate, String password, List<String> permittedUsers) {
         Channel channel = Channel.builder()
                 .id(idGenerator.getNext())
                 .channelName(channelName)
                 .isPrivate(isPrivate)
+                .password(password)
                 .permittedUsers(permittedUsers)
                 .build();
         return channelRepository.createNewChannel(channel);
@@ -50,6 +51,16 @@ public class ChannelProcessor implements ChannelService {
     @Override
     public Optional<List<String>> getAllPublicChannels() {
         return channelRepository.getAllPublicChannels();
+    }
+
+    @Override
+    public boolean checkIfChannelIsPrivate(String channelName) {
+        return channelRepository.checkIfChannelIsPrivate(channelName);
+    }
+
+    @Override
+    public boolean checkIfPermittedToJoinPrivateChannel(String channelName, String password, String username) {
+        return channelRepository.checkIfPermittedToJoinPrivateChannel(channelName, password, username);
     }
 
 }

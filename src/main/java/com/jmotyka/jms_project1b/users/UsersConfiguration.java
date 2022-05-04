@@ -14,22 +14,10 @@ public class UsersConfiguration {
 
     private static final UsersFactory USERS_FACTORY = new DefaultUsersFactory();
 
-/*    @Singleton
-    @Produces
-    public JpaPersistenceUserMapper jpaPersistenceUserMapper(){
-        return Mappers.getMapper(JpaPersistenceUserMapper.class);
-    }*/
-
     @Singleton
     @Produces
     public UsersService usersService(IdGenerator idGenerator, UsersRepository usersRepository){
         return USERS_FACTORY.usersService(idGenerator, usersRepository);
     }
-
-/*    @Singleton
-    @Produces
-    public RestUserMapper restUserMapper(){
-        return Mappers.getMapper(RestUserMapper.class);
-    }*/
 
 }

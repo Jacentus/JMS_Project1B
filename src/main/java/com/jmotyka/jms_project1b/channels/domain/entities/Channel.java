@@ -13,8 +13,8 @@ public class Channel {
     private String id;
     private final String channelName;
     private final boolean isPrivate;
+    private final String password;
     private List<String> permittedUsers;
-    private LinkedList<String> channelHistory; // zsynchronizować
-
+    private LinkedList<String> channelHistory;
 
 }

@@ -20,10 +20,4 @@ public ChannelService channelService(IdGenerator idGenerator, ChannelRepository 
     return CHANNEL_FACTORY.channelService(idGenerator, channelRepository);
 }
 
-/*    @Singleton
-    @Produces
-    public JpaPersistenceChannelMapper jpaPersistenceChannelMapper(){
-        return Mappers.getMapper(JpaPersistenceChannelMapper.class);
-    }*/
-
 }

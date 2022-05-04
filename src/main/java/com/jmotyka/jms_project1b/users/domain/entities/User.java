@@ -8,13 +8,12 @@ import java.time.Instant;
 
 @Builder
 @Getter
-//@ValidateUser jak i gdzie dodać walidację usera, aby odpalała się przy konstruktorze?
 public class User {
 
     private String id;
     @Setter
     private String userName;
-    private Instant timestamp; // to mogłoby być jakieś wstrzykiwane metadane
+    private Instant timestamp;
 
     @Override
     public String toString() {

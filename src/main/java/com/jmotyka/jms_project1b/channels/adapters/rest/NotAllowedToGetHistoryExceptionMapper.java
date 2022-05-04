@@ -12,10 +12,8 @@ public class NotAllowedToGetHistoryExceptionMapper implements ExceptionMapper<No
     @Override
     public Response toResponse(NotAllowedToGetHistoryException exception) {
         return Response.status(Response.Status.FORBIDDEN)
-                .entity(new ExceptionDto("Not allowed to view history"))
+                .entity(new ExceptionDto("You are not allowed to view history"))
                 .build();
     }
 
 }
-
-
