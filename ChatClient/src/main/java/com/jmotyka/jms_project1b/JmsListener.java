@@ -1,7 +1,7 @@
 package com.jmotyka.jms_project1b;
 
 import com.jmotyka.jms_project1b.chat.ChatMessage;
-import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
+import com.jmotyka.jms_project1b.clientadapters.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

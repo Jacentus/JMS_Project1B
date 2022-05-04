@@ -6,11 +6,9 @@ import com.jmotyka.jms_project1b.users.domain.processors.NoSuchUserException;
 import lombok.Setter;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
@@ -37,6 +35,7 @@ public class UserController {
 
     @GET
     @Path("{username}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getByUsername(@PathParam("username")String username){
         User user = usersService.getByUsername(username).orElseThrow(NoSuchUserException::new);
         UserDTO userDto = userMapper.toDto(user);

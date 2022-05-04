@@ -3,10 +3,11 @@ package com.jmotyka.jms_project1b.GUI;
 import com.jmotyka.jms_project1b.FileConverter;
 import com.jmotyka.jms_project1b.RestClient;
 import com.jmotyka.jms_project1b.channels.adapters.rest.ChannelDTO;
-import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
+import com.jmotyka.jms_project1b.clientadapters.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.ws.rs.InternalServerErrorException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -35,17 +36,22 @@ public class GUI {
         System.out.println("Enter username: ");
         Scanner scanner = new Scanner(System.in);
         String username = scanner.nextLine();
-        System.out.println("trying to get user by rest client...");
-        UserDTO user = client.getUserByName(username);
-        System.out.println("SUCCESS! USER: " + user);
+        System.out.println("Checking if user already exists...");
+        try {
+            UserDTO user = client.getUserByName(username);
+            System.out.println("SUCCESS! USER: " + user);
+            this.setUser(user);
+            return user;
+        } catch (InternalServerErrorException exception) {
+            //TODO: create new user
+        }
        // try{
         //UserDTO user = client.getUserByName(username);
         //return user;
        // } catch (Exception e){
            // UserDTO user = client.createNewUser(username);
             //UserDTO user = new UserDTO(username); //TODO: IDENTIFY USERS BY ID
-            this.setUser(user);
-            return user;
+
         //}
     }
 

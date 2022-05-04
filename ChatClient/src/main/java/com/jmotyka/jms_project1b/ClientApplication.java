@@ -1,11 +1,10 @@
 package com.jmotyka.jms_project1b;
 
 import com.jmotyka.jms_project1b.GUI.GUI;
-import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
+import com.jmotyka.jms_project1b.clientadapters.BinaryMapper;
+import com.jmotyka.jms_project1b.clientadapters.UserDTO;
 
 import lombok.SneakyThrows;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl;
 
 
@@ -18,19 +17,19 @@ public class ClientApplication {
     @SneakyThrows
     public static void main(String[] args) throws NamingException {
 
-        ResteasyClient client = new ResteasyClientBuilderImpl().build();
+        var restClient = new ResteasyClientBuilderImpl()
+                .register(BinaryMapper.class) // binary mapper? Po co?
+                .build();
 
-        //ResteasyClient client = ResteasyClientBuilder.newBuilder().build();
+        RestClient myClient = new RestClient(restClient);
 
-        RestClient restClient = new RestClient(client);
-
-        GUI gui = new GUI(restClient);
+        GUI gui = new GUI(myClient);
 
         UserDTO user  = gui.askForUsername();
 
         gui.chooseFromMenu();
 
-        restClient.getClient().close();
+        myClient.getClient().close();
 
     }
 

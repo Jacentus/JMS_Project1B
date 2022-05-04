@@ -3,6 +3,7 @@ package com.jmotyka.jms_project1b.users.adapters.rest;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.json.bind.annotation.JsonbAnnotation;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 

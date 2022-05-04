@@ -1,24 +1,11 @@
 package com.jmotyka.jms_project1b;
 
-import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.java.Log;
 
-import javax.json.Json;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-
-import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
+import com.jmotyka.jms_project1b.clientadapters.UserDTO;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Log
 public class RestClient {
@@ -28,28 +15,32 @@ public class RestClient {
     @Getter
     @Setter
     private UserDTO user;
-    private final String path = "http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api";
+    private final String path = "http://localhost:8080/JMS_Project1B-1.0-SNAPSHOT/api/users";
 
     public RestClient(ResteasyClient client) {
         this.client = client;
     }
 
-    //GET USER BY USERNAME
+    //DZIAŁA
     public UserDTO getUserByName(String userName) {
-        ResteasyWebTarget target = client.target(path);
-        UserServicesClient userProxy = target.proxy(UserServicesClient.class);
-        UserDTO userDTO = userProxy.getByUsername(userName);
-        log.info("USER DTO: " + userDTO);
-        return userDTO;
+        UserDTO user = client.target(path)
+                .path("{userName}")
+                .resolveTemplate("userName", userName)
+                .request(/*MediaType.APPLICATION_JSON_TYPE*/)
+                .get(UserDTO.class);
+        System.out.println("dane z usera: " + user.getUserName() + ", " + user.getId());
+        return user;
     }
-}
+
     //CREATE NEW USER
-   /* public UserDTO createNewUser(String username) {
+/*    public UserDTO createNewUser(String username) {
+        UserDTO user = new UserDTO(username);
+
         ResteasyWebTarget target = client.target(path);
         UserServicesClient userProxy = target.proxy(UserServicesClient.class);
     }*/
 
-
+}
 /*
 
 

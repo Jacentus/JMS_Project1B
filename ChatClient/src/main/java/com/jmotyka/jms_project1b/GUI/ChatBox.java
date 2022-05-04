@@ -4,7 +4,7 @@ import com.jmotyka.jms_project1b.FileConverter;
 import com.jmotyka.jms_project1b.JmsListener;
 import com.jmotyka.jms_project1b.ProxyFactory;
 import com.jmotyka.jms_project1b.chat.ChatMessage;
-import com.jmotyka.jms_project1b.users.adapters.rest.UserDTO;
+import com.jmotyka.jms_project1b.clientadapters.UserDTO;
 
 import javax.jms.*;
 import javax.naming.NamingException;
