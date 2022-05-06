@@ -29,7 +29,6 @@ public class RestClient {
         this.client = client;
     }
 
-    //DZIAŁA  TODO: ZROBIĆ OBSŁUGĘ BŁĘDÓW
     public UserDTO getUserByName(String userName) {
         UserDTO user = client.target(userPath)
                 .path("{userName}")
@@ -39,7 +38,6 @@ public class RestClient {
         return user;
     }
 
-    //DZIAŁA TODO: ZROBIĆ OBSŁUGĘ BŁĘDÓW
     public UserDTO createNewUser(String username) {
         UserDTO user = new UserDTO(username);
         Response response = client.target(userPath)
@@ -60,7 +58,7 @@ public class RestClient {
         return isPrivate;
     }
 
-    // DZIAŁA TODO: ZROBIĆ OBSŁUGĘ BŁĘDÓW
+    // DZIAŁA
     public List<String> getChannelHistory(String channelName, String username) {
         Response response = client.target(channelPath+"/history")
                 .path("{channelName}")
