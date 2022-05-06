@@ -70,7 +70,7 @@ public class ChatBox {
         try (JMSContext jmsContext = connectionFactory.createContext()) {
             Message message = jmsContext.createObjectMessage(new ChatMessage(user.getUserName(), channelName ,text));
             message.setStringProperty("channel", channelName);
-            message.setStringProperty("sender", user.getUserName()); //TODO: identify senders
+            message.setStringProperty("sender", user.getUserName());
             jmsContext.createProducer().send(topic, message);
         } catch (JMSException e) {
             e.printStackTrace();

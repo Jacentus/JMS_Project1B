@@ -48,7 +48,7 @@ public class GUI {
             System.out.println("New user has been created. Nice to meet you, " + user.getUserName());
             this.setUser(user);
             return user;
-        } //TODO: IDENTIFY USERS BY ID
+        }
     }
 
     public void chooseFromMenu()  {
@@ -64,10 +64,9 @@ public class GUI {
                     for (String channelName : publicChannels) {
                         System.out.println(channelName);
                     }
-                    //TODO: obsługa błędów
                     break;
                 case "2":
-                    System.out.println("Type channel name: "); // TODO: OBSŁUGA BŁĘDU GDY BRAK KANAŁU
+                    System.out.println("Type channel name: ");
                     String channelName = scanner.nextLine();
                     if(!client.channelIsPrivate(channelName)) {
                         ChatBox publicChatBox = new ChatBox(scanner, fileConverter, channelName, user);
@@ -81,7 +80,6 @@ public class GUI {
                         } else {
                             System.out.println("You are not permitted to join that channel or it does not exist");
                         }
-                        //TODO: OBSŁUGA BŁĘDÓW
                     }
                     break;
                 case "3":
@@ -107,7 +105,6 @@ public class GUI {
                     if(responsePrivate==201) {
                         System.out.println("A private channel has been successfully created!  You can join it now!");
                     } else System.out.println("Sth went wrong! Try again");
-                    //TODO: OBSŁUGA BŁĘDÓW
                     break;
                 case "4":
                     System.out.println("Type channel name: ");

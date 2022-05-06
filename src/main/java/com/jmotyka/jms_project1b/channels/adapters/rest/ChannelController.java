@@ -21,7 +21,7 @@ public class ChannelController {
     private ChannelService channelService;
 
     @Inject
-    private RestChannelMapper channelMapper; //TODO: NIE DZIAŁA MAPPER
+    private RestChannelMapper channelMapper;
 
     @Context
     private UriInfo uriInfo;

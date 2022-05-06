@@ -37,7 +37,7 @@ public class JmsListener implements MessageListener {
     public void listen() {
             try {
                 consumer.setMessageListener(this);
-            } catch (Exception e){ //TODO: OBSŁUGA BŁĘDÓW
+            } catch (Exception e){
                 System.out.println("CLOSING MESSAGE LISTENER");
                 e.printStackTrace();
             }
